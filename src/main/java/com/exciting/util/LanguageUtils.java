@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * 判定乱码（中文）工具类
  * 
- * @author hutao
+ * @author Alastor
  *
  */
 public class LanguageUtils {

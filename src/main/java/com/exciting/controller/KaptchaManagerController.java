@@ -5,9 +5,9 @@ import com.exciting.component.FakeSessionComponent;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.*;
+import io.swagger.models.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +24,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by wujiaxing on 2017/5/9.
  */
-@Api(value = "图片验证码")
+@Api(description = "图片验证码")
 @RestController
 @RequestMapping("/kaptcha")
 public class KaptchaManagerController {
@@ -38,7 +38,7 @@ public class KaptchaManagerController {
     @Resource
     private FakeSessionComponent fakeSessionComponent;
 
-    @ApiOperation(value = "验证码获取",notes = "")
+    @ApiOperation(value = "验证码获取", httpMethod = "GET")
     @RequestMapping("/image/kaptcha.jpg")
     public ModelAndView handleRequest(HttpServletResponse response,
                                       @ApiParam(value = "时间戳")@RequestParam("time")Long time) throws Exception{

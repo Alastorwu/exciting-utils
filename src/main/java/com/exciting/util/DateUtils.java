@@ -60,6 +60,7 @@ public class DateUtils {
     public static void main(String[] args) throws Exception {
         String s = DateUtils.localDateTimeToString(LocalDateTime.now(), format_ymdhms);
         System.out.println(s);
+        //LocalDateTime.now().plusSeconds()
     }
 
 }

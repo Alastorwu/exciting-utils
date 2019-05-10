@@ -5,6 +5,7 @@ import com.exciting.component.FakeSessionComponent;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.*;
+import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -58,15 +59,11 @@ public class KaptchaManagerController {
         // create the image with the text
         BufferedImage bi = captchaProducer.createImage(capText);
 
-        ServletOutputStream out = response.getOutputStream();
+        @Cleanup ServletOutputStream out = response.getOutputStream();
 
         // write the data out
         ImageIO.write(bi, "jpg", out);
-        try {
-            out.flush();
-        } finally {
-            out.close();
-        }
+        out.flush();
         return null;
     }
 

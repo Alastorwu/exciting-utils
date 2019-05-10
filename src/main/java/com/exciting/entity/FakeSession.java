@@ -1,33 +1,15 @@
 package com.exciting.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Data
 public class FakeSession {
-    private LocalDateTime createTime;
-    private String sessionValue;
-    private LocalDateTime expireTime;
+    @Getter @Setter private LocalDateTime createTime;
+    @Getter @Setter private String sessionValue;
+    @Getter @Setter private LocalDateTime expireTime;
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getSessionValue() {
-        return sessionValue;
-    }
-
-    public void setSessionValue(String sessionValue) {
-        this.sessionValue = sessionValue;
-    }
-
-    public LocalDateTime getExpireTime() {
-        return expireTime;
-    }
-
-    public void setExpireTime(LocalDateTime expireTime) {
-        this.expireTime = expireTime;
-    }
 }

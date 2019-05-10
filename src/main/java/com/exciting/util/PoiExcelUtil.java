@@ -27,7 +27,6 @@ public class PoiExcelUtil<T> {
      * @param outClass 输出类型
      * @return
      * @throws IOException
-     * @throws NoSuchMethodException
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws InvocationTargetException
@@ -67,7 +66,7 @@ public class PoiExcelUtil<T> {
                     Cell cell = row.getCell(j);
                     Method method = methods.get(j);
                     Class<?>[] parameterTypes = method.getParameterTypes();
-                    if(parameterTypes==null || parameterTypes.length==0 || cell==null){
+                    if(parameterTypes.length == 0 || cell == null){
                         continue;
                     }else if(parameterTypes[0]==String.class){
                         method.invoke(outInfo, cell.getStringCellValue());

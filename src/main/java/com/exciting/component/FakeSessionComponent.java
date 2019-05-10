@@ -14,14 +14,12 @@ public class FakeSessionComponent {
 
     public void setAttribute(String key, String value, long expireSecond) {
         clean();
-        synchronized (FakeSessionComponent.class) {
-            LocalDateTime nowTime = LocalDateTime.now();
-            FakeSession fakeSession = new FakeSession();
-            fakeSession.setCreateTime(nowTime);
-            fakeSession.setExpireTime(nowTime.plusSeconds(expireSecond));
-            fakeSession.setSessionValue(value);
-            session.put(key,fakeSession);
-        }
+        LocalDateTime nowTime = LocalDateTime.now();
+        FakeSession fakeSession = new FakeSession();
+        fakeSession.setCreateTime(nowTime);
+        fakeSession.setExpireTime(nowTime.plusSeconds(expireSecond));
+        fakeSession.setSessionValue(value);
+        session.put(key,fakeSession);
 
     }
 
@@ -36,15 +34,7 @@ public class FakeSessionComponent {
     }
 
     public void clean(){
-        synchronized (FakeSessionComponent.class) {
-            Iterator it = session.keySet().iterator();
-            while (it.hasNext()) {
-                FakeSession next = (FakeSession) it.next();
-                if (LocalDateTime.now().compareTo(next.getExpireTime()) > 0) {
-                    it.remove();
-                }
-
-            }
-        }
+        session.entrySet().removeIf(item ->
+                LocalDateTime.now().compareTo(item.getValue().getExpireTime()) > 0);
     }
 }

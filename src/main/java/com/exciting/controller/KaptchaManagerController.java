@@ -8,10 +8,7 @@ import io.swagger.annotations.*;
 import io.swagger.models.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -38,8 +35,8 @@ public class KaptchaManagerController {
     @Resource
     private FakeSessionComponent fakeSessionComponent;
 
-    @ApiOperation(value = "验证码获取", httpMethod = "GET")
-    @RequestMapping("/image/kaptcha.jpg")
+    @ApiOperation(value = "验证码获取"/*, httpMethod = "GET"*/)
+    @RequestMapping(value = "/image/kaptcha.jpg",method = {RequestMethod.GET,RequestMethod.POST})
     public ModelAndView handleRequest(HttpServletResponse response,
                                       @ApiParam(value = "时间戳")@RequestParam("time")Long time) throws Exception{
         response.setDateHeader("Expires", 0);

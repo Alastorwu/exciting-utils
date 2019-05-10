@@ -1,7 +1,6 @@
 package com.exciting.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
@@ -12,9 +11,8 @@ import java.nio.file.Paths;
 /**
  * Created by ray.liu on 2017/4/5.
  */
+@Slf4j
 public class FileUtils {
-
-    private static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     public static File getOutFile(String filePath, String fileName) throws IOException {
         Path path = Paths.get(filePath);
@@ -73,7 +71,7 @@ public class FileUtils {
             inputStream.close();
             outputStream.close();
         } catch (IOException e) {
-            logger.error(e.getMessage(),e);
+            log.error(e.getMessage(),e);
         }
         return path + fileName;
     }
@@ -107,7 +105,7 @@ public class FileUtils {
         try {
             return FileUtils.getBytesFromInputStream(new FileInputStream(file));
         } catch (FileNotFoundException e) {
-            logger.error(e.getMessage(),e);
+            log.error(e.getMessage(),e);
         }
         return null;
     }
@@ -127,7 +125,7 @@ public class FileUtils {
             out.close();
             ret = out.toByteArray();
         } catch (IOException e) {
-            logger.error(e.getMessage(),e);
+            log.error(e.getMessage(),e);
         }
         return ret;
     }

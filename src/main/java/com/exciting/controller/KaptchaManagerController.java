@@ -5,8 +5,7 @@ import com.exciting.component.FakeSessionComponent;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import io.swagger.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,11 +20,10 @@ import java.awt.image.BufferedImage;
  * Created by wujiaxing on 2017/5/9.
  */
 @Api(description = "图片验证码")
+@Slf4j
 @RestController
 @RequestMapping("/kaptcha")
 public class KaptchaManagerController {
-
-    private Logger logger = LoggerFactory.getLogger(KaptchaManagerController.class);
 
 
     @Resource
@@ -55,8 +53,7 @@ public class KaptchaManagerController {
         // store the text in the session
         //request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
         fakeSessionComponent.setAttribute(Constants.KAPTCHA_SESSION_KEY+time,capText,300L);
-
-        logger.info(Constants.KAPTCHA_SESSION_KEY+time+";code:"+capText);
+        log.info(Constants.KAPTCHA_SESSION_KEY+time+";code:"+capText);
 
         // create the image with the text
         BufferedImage bi = captchaProducer.createImage(capText);
@@ -78,7 +75,7 @@ public class KaptchaManagerController {
     public String loginCheck(HttpServletRequest request,
                              @ApiParam(value = "验证码") @RequestParam(value = "code") String code,
                              @ApiParam(value = "时间戳") @RequestParam("time")Long time){
-        logger.info("验证码验证,参数为：{}", "{code="+code+";}");
+        log.info("验证码验证,参数为：{}", "{code="+code+";}");
         JSONObject ret = new JSONObject();
         ret.put("code","0");
         ret.put("message","SUCCESS");
@@ -90,7 +87,7 @@ public class KaptchaManagerController {
             ret.put("message","FAILD");
         }
         ret.put("currentDate",System.currentTimeMillis());
-        logger.info("验证码验证结束：{}", ret.toJSONString());
+        log.info("验证码验证结束：{}", ret.toJSONString());
         return ret.toJSONString();
     }
 

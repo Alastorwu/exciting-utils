@@ -1,9 +1,8 @@
 package com.exciting.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -22,8 +21,8 @@ import java.util.Map;
 
 import static org.apache.commons.codec.Charsets.UTF_8;
 
+@Slf4j
 public class EncryptDecryptUtil {
-	private static Logger log = LoggerFactory.getLogger(EncryptDecryptUtil.class);
 	private static Integer AES_LENGTH = 128;
 	private static Integer RSA_LENGTH = 1024;
 	private static String AES_ALGORITHM = "AES";

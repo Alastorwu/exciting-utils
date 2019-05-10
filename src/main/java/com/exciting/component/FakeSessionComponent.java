@@ -4,13 +4,13 @@ import com.exciting.entity.FakeSession;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class FakeSessionComponent {
-    private volatile static Map<String,FakeSession> session =new HashMap<>();
+    private volatile static Map<String,FakeSession> session =new ConcurrentHashMap<>();
 
     public void setAttribute(String key, String value, long expireSecond) {
         clean();

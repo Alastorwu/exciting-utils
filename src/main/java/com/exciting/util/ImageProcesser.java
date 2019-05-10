@@ -138,7 +138,7 @@ public class ImageProcesser {
     public static void main(final String[] args) throws FileNotFoundException {
 
         ImageProcesser.batchImgFile(
-                "D:\\oneDrive\\图片\\表情\\其他\\2d63aef98c99aa39.jpg","D:\\test.txt");
+                "D:\\oneDrive\\图片\\表情\\膜蛤\\th.jpg","D:\\frog.txt");
     }
 
 }

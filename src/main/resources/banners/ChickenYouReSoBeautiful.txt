@@ -13,3 +13,7 @@ k .一一一鸡太美
 .一一一鸡一一一美
 一一一鸡一一一美
 一一一■◣一一一■◣一
+${AnsiColor.BRIGHT_RED}
+Application Version: ${application.version}${application.formatted-version}
+Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
+${AnsiColor.BLACK}

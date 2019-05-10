@@ -15,7 +15,7 @@ import java.util.Map;
  * @author June
  * @version 1.0, 2010-06-17
  */
-public class IdcardUtils extends StringUtils {
+public class IdCardUtils extends StringUtils {
 
 	/** 中国公民身份证号码最小长度。 */
 	public static final int CHINA_ID_MIN_LENGTH = 15;
@@ -489,6 +489,29 @@ public class IdcardUtils extends StringUtils {
 		return idCard.substring(6, 14);
 	}
 
+
+	/**
+	 * 根据身份证号获取性别
+	 *
+	 * @param idCard 身份证号码
+	 * @return 性别
+	 */
+	public static String getSexByIdCard(String idCard) {
+		String sex;
+		int resultNum = 0;
+		if (StringUtils.isNotBlank(idCard) && idCard.length() == CHINA_ID_MIN_LENGTH) {
+			resultNum = idCard.charAt(14);
+		} else if (StringUtils.isNotBlank(idCard) && idCard.length() == CHINA_ID_MAX_LENGTH) {
+			resultNum = idCard.charAt(16);
+		}
+		if (resultNum % 2 == 0) {
+			sex = "woman";
+		} else {
+			sex = "man";
+		}
+		return sex;
+	}
+
 	/**
 	 * 根据身份编号获取生日年
 	 * 
@@ -627,4 +650,7 @@ public class IdcardUtils extends StringUtils {
 		}
 		return (iDate >= 1) && (iDate <= datePerMonth);
 	}
+
+
+
 }

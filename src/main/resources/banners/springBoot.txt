@@ -1,0 +1,6 @@
+${AnsiColor.BRIGHT_BLUE}███████${AnsiColor.GREEN}╗██████╗ ██████╗ ██╗███╗   ██╗ ██████╗     ██████╗  ██████╗  ██████╗ ${AnsiColor.MAGENTA}████████${AnsiColor.GREEN}╗
+${AnsiColor.BRIGHT_BLUE}██${AnsiColor.GREEN}╔════╝██╔══██╗██╔══██╗██║████╗  ██║██╔════╝     ██╔══██╗██╔═══██╗██╔═══██╗╚══${AnsiColor.MAGENTA}██${AnsiColor.GREEN}╔══╝
+${AnsiColor.BRIGHT_BLUE}███████${AnsiColor.GREEN}╗██████╔╝██████╔╝██║██╔██╗ ██║██║  ███╗    ██████╔╝██║   ██║██║   ██║   ${AnsiColor.MAGENTA}██${AnsiColor.GREEN}║
+╚════${AnsiColor.BRIGHT_BLUE}██${AnsiColor.GREEN}║██╔═══╝ ██╔══██╗██║██║╚██╗██║██║   ██║    ██╔══██╗██║   ██║██║   ██║   ${AnsiColor.MAGENTA}██${AnsiColor.GREEN}║
+${AnsiColor.BRIGHT_BLUE}███████${AnsiColor.GREEN}║██║     ██║  ██║██║██║ ╚████║╚██████╔╝    ██████╔╝╚██████╔╝╚██████╔╝   ${AnsiColor.MAGENTA}██${AnsiColor.WHITE}║
+╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝     ╚═════╝  ╚═════╝  ╚═════╝    ╚═╝   ${spring-boot.version}

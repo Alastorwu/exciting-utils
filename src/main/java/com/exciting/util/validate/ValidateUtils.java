@@ -1,4 +1,4 @@
-package com.exciting.util;
+package com.exciting.util.validate;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,4 +1,4 @@
-package com.exciting.util;
+package com.exciting.util.banner;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

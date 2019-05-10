@@ -100,7 +100,7 @@ public class ImageProcesser {
     }
 
     /*批处理图像文件*/
-    /*public static void batchImgFile(String srcfile, String tragetfile){
+    /*public static void changeImgFile(String srcfile, String tragetfile){
 
         File folder = new File(tragetfile); //生成图片的文件夹
         File srcfolder = new File(srcfile);
@@ -120,7 +120,7 @@ public class ImageProcesser {
 
     }*/
 
-    public static void batchImgFile(String path, String tragetfile){
+    public static void changeImgFile(String path, String tragetfile){
 
         File folder = new File(tragetfile); //生成图片的文件夹
         File srcfolder = new File(path);
@@ -137,7 +137,7 @@ public class ImageProcesser {
 
     public static void main(final String[] args) throws FileNotFoundException {
 
-        ImageProcesser.batchImgFile(
+        ImageProcesser.changeImgFile(
                 "D:\\oneDrive\\图片\\表情\\膜蛤\\th.jpg","D:\\frog.txt");
     }
 

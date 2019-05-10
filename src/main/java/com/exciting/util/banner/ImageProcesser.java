@@ -31,7 +31,7 @@ public class ImageProcesser {
     }
     public ImageProcesser toBitmapConvert(File imageFile){
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if(!imageFile.exists()){ //当读取的文件不存在时，结束程序
             System.out.println("File is not exists!");
             System.exit(1);
@@ -51,7 +51,7 @@ public class ImageProcesser {
                     color = new Color(rgb);
 
                     int cvalue = (color.getRed()+color.getGreen()+color.getBlue()) / 3;
-                    sb.append(charset[(int)((cvalue * charset.length - 1)/255)]+" ");
+                    sb.append(charset[ ((cvalue * charset.length - 1) / 255)]).append(" ");
                 }
                 sb.append("\r\n");
             }

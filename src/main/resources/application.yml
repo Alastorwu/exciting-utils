@@ -10,7 +10,7 @@ spring:
   application:
     name: exciting_utils
   banner:
-    location: banners/ChickenYouReSoBeautiful.txt
+    location: banners/喜逼.txt
 
 logging:
   config: classpath:log4j2.xml

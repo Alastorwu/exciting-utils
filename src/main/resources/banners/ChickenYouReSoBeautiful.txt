@@ -1,0 +1,15 @@
+${AnsiColor.BLACK}
+c..一一一一鸡美
+x.一一一鸡你太美
+k .一一一鸡太美
+一一一鸡你实在-美
+一一鸡一你实在--美
+.一鸡-一实在是一-美
+..一鸡一你太美一-${AnsiColor.BRIGHT_RED}✪${AnsiColor.BLACK}
+.一一一鸡你太美
+一一一鸡太美鸡美
+一一一鸡一${AnsiColor.BRIGHT_YELLOW}J${AnsiColor.BLACK}一美
+.一一一鸡一${AnsiColor.BRIGHT_YELLOW}8${AnsiColor.BLACK}一美
+.一一一鸡一一一美
+一一一鸡一一一美
+一一一■◣一一一■◣一

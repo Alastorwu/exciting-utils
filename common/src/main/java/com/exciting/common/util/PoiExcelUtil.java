@@ -35,9 +35,9 @@ public class PoiExcelUtil{
      *
      */
     public static <T> List<T> readExcelToObjectList(File file
-            , String sheetName
-            , Map<String,String> title
-            , Class<T> outClass)
+                                                    , String sheetName
+                                                    , Map<String,String> title
+                                                    , Class<T> outClass)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         String fileName = file.getName();
         log.info("PoiExcelUtil读取的文件名为：" + fileName);
@@ -59,10 +59,10 @@ public class PoiExcelUtil{
      *
      */
     public static <T> List<T> readExcelToObjectList(InputStream inputStream
-                                            , String fileName
-                                            , String sheetName
-                                            , Map<String,String> title
-                                            , Class<T> outClass)
+                                                    , String fileName
+                                                    , String sheetName
+                                                    , Map<String,String> title
+                                                    , Class<T> outClass)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         Method[] allMethods = outClass.getMethods();
         if(allMethods==null){return null;}
@@ -135,8 +135,34 @@ public class PoiExcelUtil{
     }
 
 
+    /**
+     *
+     * @param file file
+     * @param sheetName sheetName
+     * @param title title
+     * @return List<Map<String, Object>>
+     * @throws IOException IOException
+     */
+    public static List<Map<String, Object>> readExcelToMap(File file
+                                                           , String sheetName
+                                                           , Map<String, String> title)throws IOException {
+        String fileName = file.getName();
+        log.info("PoiExcelUtil读取的文件名为：" + fileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return readExcelToMap(fileInputStream,fileName,sheetName,title);
+
+    }
 
 
+    /**
+     *
+     * @param inputStream inputStream
+     * @param fileName fileName
+     * @param sheetName sheetName
+     * @param title title
+     * @return List<Map<String, Object>>
+     * @throws IOException IOException
+     */
     public static List<Map<String, Object>> readExcelToMap(InputStream inputStream
                                                            , String fileName
                                                            , String sheetName

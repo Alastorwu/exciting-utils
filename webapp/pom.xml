@@ -8,7 +8,7 @@
     <name>webapp</name>
 
     <properties>
-        <start-class>com.exciting.SpringBootApplication</start-class>
+        <start-class>com.exciting.webapp.Application</start-class>
     </properties>
 
     <parent>

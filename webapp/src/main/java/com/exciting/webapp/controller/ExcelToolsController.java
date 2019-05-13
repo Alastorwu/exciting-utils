@@ -3,7 +3,6 @@ package com.exciting.webapp.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.exciting.common.entity.ResponseEntity;
 import com.exciting.common.util.PoiExcelUtil;
-import com.exciting.webapp.entity.TestVo;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class ExcelToolsController {
 
 
     @RequestMapping(value = "/testUp",method = RequestMethod.POST)
-    public ResponseEntity<List<TestVo>> testUp(
+    public ResponseEntity<List<Map<String,Object>>> testUp(
             @ApiParam(required = true,value = "上传文件")@RequestParam() MultipartFile file
             ,@ApiParam(required = true,value = "{Excel对应标题:Object对应字段}example={'姓名':'name','年龄':'age'}")
              @RequestParam()String titles
@@ -52,13 +50,12 @@ public class ExcelToolsController {
 
             InputStream inputStream = file.getInputStream();
             Map<String,String> map = new HashMap(JSONObject.parseObject(titles));
-            //List<Map<String,Object>> maps = PoiExcelUtil.readExcelToMap(inputStream, fileName, null, map);
-            List<TestVo> maps = PoiExcelUtil.readExcelToObjectList(inputStream, fileName, null, map, TestVo.class);
+            List<Map<String,Object>> maps = PoiExcelUtil.readExcelToMap(inputStream, fileName, null, map);
             return ResponseEntity.ok(maps);
-        } catch (IOException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             log.error(e.getMessage(),e);
-            return ResponseEntity.serverError("文件读取错误!");
+            return ResponseEntity.serverError("文件解析错误!");
         }
     }
 

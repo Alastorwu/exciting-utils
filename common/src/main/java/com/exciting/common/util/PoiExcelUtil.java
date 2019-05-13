@@ -13,10 +13,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by wujiaxing on 2017/5/2.
@@ -71,7 +68,7 @@ public class PoiExcelUtil{
         if(allMethods==null){return null;}
         Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
-        List<Method> methods = new ArrayList<>();
+        Map<Cell,Method> titleMethod = new HashMap<>();
         List<T> list = new ArrayList<>();
         for (Row row : sheet) {
             //读取标题
@@ -83,40 +80,45 @@ public class PoiExcelUtil{
                     }
                     for (Method method : allMethods) {
                         if(method.getName().equals("set" + ExcitingStringUtils.captureName(key))){
-                            methods.add(method);break;
+                            titleMethod.put(cell,method);
+                            break;
                         }
                     }
                 }
             }else{
                 //读取一行字段转换为Object
                 T outInfo = outClass.newInstance();
-                for (int j = 0; j < methods.size(); j++) {
-                    Cell cell = row.getCell(j);
-                    Method method = methods.get(j);
+                for (Map.Entry<Cell, Method> cellMethodEntry : titleMethod.entrySet()) {
+                    Cell titleCell = cellMethodEntry.getKey();
+                    Method method = cellMethodEntry.getValue();
+
+                    Cell cell = row.getCell(titleCell.getColumnIndex());
                     Class<?>[] parameterTypes = method.getParameterTypes();
                     if(parameterTypes.length == 0 || cell == null){
                         continue;
-                    }else if(parameterTypes[0]==String.class){
+                    }
+                    Class<?> parameterType = parameterTypes[0];
+                    if(parameterType == String.class){
                         method.invoke(outInfo, cell.getStringCellValue());
-                    }else if(parameterTypes[0]==int.class || parameterTypes[0]==Integer.class){
+                    }else if(parameterType ==int.class || parameterType ==Integer.class){
                         int cellType = cell.getCellType();
                         if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
                             continue;
                         }
                         method.invoke(outInfo, (int)cell.getNumericCellValue());
-                    }else if(parameterTypes[0]==double.class || parameterTypes[0]==Double.class){
+                    }else if(parameterType == double.class || parameterType == Double.class){
                         int cellType = cell.getCellType();
                         if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
                             continue;
                         }
                         method.invoke(outInfo, cell.getNumericCellValue());
-                    }else if(parameterTypes[0]==BigDecimal.class){
+                    }else if(parameterType == BigDecimal.class){
                         int cellType = cell.getCellType();
                         if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
                             continue;
                         }
                         method.invoke(outInfo, new BigDecimal(cell.getNumericCellValue()));
-                    }else if(parameterTypes[0]==Date.class ){
+                    }else if(parameterType == Date.class ){
                         int cellType = cell.getCellType();
                         if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
                             continue;
@@ -127,6 +129,57 @@ public class PoiExcelUtil{
 
                 }
                 list.add(outInfo);
+            }
+        }
+        return list;
+    }
+
+
+
+
+    public static List<Map<String, Object>> readExcelToMap(InputStream inputStream
+                                                           , String fileName
+                                                           , String sheetName
+                                                           , Map<String, String> title) throws IOException {
+        Sheet sheet = getSheet(inputStream,fileName,sheetName);
+        if(sheet == null){return null;}
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String,Cell> titleCellMap = new HashMap<>();
+        for (Row row : sheet) {
+            //读取标题
+            if(row.getRowNum()==0){
+                for (Cell cell : row) {
+                    String key = title.get(cell.getStringCellValue());
+                    if(StringUtils.isBlank(key)){
+                        continue;
+                    }
+                    titleCellMap.put(key,cell);
+
+                }
+            }else{
+                Map<String, Object> map = new HashMap<>();
+                //读取一行字段转换为Object
+                for (Map.Entry<String, Cell> cellMethodEntry : titleCellMap.entrySet()) {
+                    String titleKey = cellMethodEntry.getKey();
+                    Cell titleCell = cellMethodEntry.getValue();
+
+                    Cell cell = row.getCell(titleCell.getColumnIndex());
+                    if(cell == null){
+                        continue;
+                    }
+                    int cellType = cell.getCellType();
+                    if( Cell.CELL_TYPE_FORMULA==cellType
+                        || Cell.CELL_TYPE_NUMERIC==cellType
+                        || Cell.CELL_TYPE_ERROR==cellType
+                        || Cell.CELL_TYPE_BLANK==cellType){
+                        map.put(titleKey,cell.getNumericCellValue());
+                    }else if(Cell.CELL_TYPE_BOOLEAN==cellType){
+                        map.put(titleKey,cell.getBooleanCellValue());
+                    }else{
+                        map.put(titleKey,cell.getStringCellValue());
+                    }
+                }
+                list.add(map);
             }
         }
         return list;
@@ -151,16 +204,6 @@ public class PoiExcelUtil{
         }
         return sheet;
     }
-
-
-
-    public static List<Map<String, Object>> readExcelToMap(InputStream inputStream
-                                                           , String fileName
-                                                           , String sheetName
-                                                           , Map<String, String> title) {
-        return null;
-    }
-
 
 
 }

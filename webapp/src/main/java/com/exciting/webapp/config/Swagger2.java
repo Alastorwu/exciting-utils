@@ -19,7 +19,7 @@ public class Swagger2 {
 	public Docket createRestApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.exciting.controller"))
+				.apis(RequestHandlerSelectors.basePackage("com.exciting.webapp.controller"))
 				.paths(PathSelectors.any()).build();
 	}
 

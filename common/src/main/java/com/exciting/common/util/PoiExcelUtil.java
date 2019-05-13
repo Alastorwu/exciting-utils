@@ -1,9 +1,13 @@
 package com.exciting.common.util;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -17,22 +21,51 @@ import java.util.Map;
 /**
  * Created by wujiaxing on 2017/5/2.
  */
-public class PoiExcelUtil<T> {
+@Slf4j
+public class PoiExcelUtil{
+
+
+    /**
+     * @param file file
+     * @param sheetName sheet名
+     * @param title Map<Excel对应标题,Object对应字段>
+     * @param outClass 输出类型
+     * @return List<T>
+     * @throws IOException IOException
+     * @throws IllegalAccessException IllegalAccessException
+     * @throws InstantiationException InstantiationException
+     * @throws InvocationTargetException InvocationTargetException
+     *
+     */
+    public static <T> List<T> readExcelToObjectList(File file
+            , String sheetName
+            , Map<String,String> title
+            , Class<T> outClass)
+            throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        String fileName = file.getName();
+        log.info("PoiExcelUtil读取的文件名为：" + fileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return readExcelToObjectList(fileInputStream,fileName,sheetName,title,outClass);
+    }
 
     /**
      * @param inputStream Excel文件FileInputStream
      * @param fileName Excel文件名
      * @param sheetName sheet名
-     * @param title Map<Object对应字段，Excel对应标题>
+     * @param title Map<Excel对应标题,Object对应字段>
      * @param outClass 输出类型
-     * @return
-     * @throws IOException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws InvocationTargetException
+     * @return List<T>
+     * @throws IOException IOException
+     * @throws IllegalAccessException IllegalAccessException
+     * @throws InstantiationException InstantiationException
+     * @throws InvocationTargetException InvocationTargetException
      *
      */
-    public List<T> readExcelToList(InputStream inputStream, String fileName, String sheetName, Map<String,String> title, Class<T> outClass)
+    public static <T> List<T> readExcelToObjectList(InputStream inputStream
+                                            , String fileName
+                                            , String sheetName
+                                            , Map<String,String> title
+                                            , Class<T> outClass)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         Workbook workbook = null;
         //根据文件后缀读取
@@ -44,7 +77,12 @@ public class PoiExcelUtil<T> {
         if(workbook==null){return null;}
         Method[] allMethods = outClass.getMethods();
         if(allMethods==null){return null;}
-        Sheet sheet = workbook.getSheet(sheetName);
+        Sheet sheet;
+        if(StringUtils.isBlank(sheetName)){
+            sheet = workbook.getSheetAt(0);
+        }else{
+            sheet = workbook.getSheet(sheetName);
+        }
         if(sheet == null){return null;}
         List<Method> methods = new ArrayList<>();
         List<T> list = new ArrayList<>();
@@ -53,8 +91,11 @@ public class PoiExcelUtil<T> {
             if(row.getRowNum()==0){
                 for (Cell cell : row) {
                     String key = title.get(cell.getStringCellValue());
+                    if(StringUtils.isBlank(key)){
+                        continue;
+                    }
                     for (Method method : allMethods) {
-                        if(method.getName().equals("set" + captureName(key))){
+                        if(method.getName().equals("set" + ExcitingStringUtils.captureName(key))){
                             methods.add(method);break;
                         }
                     }
@@ -104,13 +145,5 @@ public class PoiExcelUtil<T> {
         return list;
     }
 
-    //首字母大写
-    public static String captureName(String name) {
-        //     name = name.substring(0, 1).toUpperCase() + name.substring(1);
-//        return  name;
-        char[] cs=name.toCharArray();
-        cs[0]-=32;
-        return String.valueOf(cs);
 
-    }
 }

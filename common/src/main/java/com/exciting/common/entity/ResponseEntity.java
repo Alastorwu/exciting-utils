@@ -1,19 +1,70 @@
 package com.exciting.common.entity;
 
 import lombok.Data;
+import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
-import java.io.Serializable;
+import static org.springframework.http.HttpStatus.*;
 
-/**
- * @author wujiaxing
- * @date 2018/4/23 20:53
- */
 @Data
+public class ResponseEntity<T>{
 
-public class ResponseEntity<T> implements Serializable {
-
-    private String code;
+    private T body;
+    private Integer status;
     private String message;
-    private T data;
 
+    public ResponseEntity(HttpStatus status) {
+        Assert.notNull(status, "HttpStatus must not be null");
+        this.status = status.value();
+    }
+
+    public ResponseEntity(int status) {
+        this.status = status;
+    }
+
+    public ResponseEntity(HttpStatus status, String message) {
+        Assert.notNull(status, "HttpStatus must not be null");
+        this.status = status.value();
+        this.message = message;
+    }
+
+    public ResponseEntity(int status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
+    public ResponseEntity(@Nullable T body, HttpStatus status) {
+        this(status);
+        this.body = body;
+    }
+
+    public ResponseEntity(@Nullable T body, int status) {
+        this.body = body;
+        this.status = status;
+    }
+
+    public ResponseEntity(@Nullable T body, HttpStatus status, String message) {
+        this(status,message);
+        this.body = body;
+    }
+
+    public ResponseEntity(@Nullable T body, int status, String message) {
+        this(status,message);
+        this.body = body;
+    }
+
+    public static <T> ResponseEntity<T> ok(@Nullable T body) {
+        return new ResponseEntity<>(body, OK);
+    }
+    public static <T> ResponseEntity<T> serverError(String message) {
+        return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR, message);
+    }
+    public static <T> ResponseEntity<T> forbidden(String message) {
+        return new ResponseEntity<>(null, FORBIDDEN, message);
+    }
+
+    public void setStatus(HttpStatus httpStatus) {
+        this.status = httpStatus.value();
+    }
 }

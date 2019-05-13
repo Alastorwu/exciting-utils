@@ -23,6 +23,8 @@ public class PoiExcelUtil{
 
 
     /**
+     * 读取Excel返回实体类
+     *
      * @param file file
      * @param sheetName sheet名
      * @param title Map<Excel对应标题,Object对应字段>
@@ -32,7 +34,6 @@ public class PoiExcelUtil{
      * @throws IllegalAccessException IllegalAccessException
      * @throws InstantiationException InstantiationException
      * @throws InvocationTargetException InvocationTargetException
-     *
      */
     public static <T> List<T> readExcelToObjectList(File file
                                                     , String sheetName
@@ -46,6 +47,8 @@ public class PoiExcelUtil{
     }
 
     /**
+     * 读取Excel返回实体类
+     *
      * @param inputStream Excel文件FileInputStream
      * @param fileName Excel文件名
      * @param sheetName sheet名
@@ -56,7 +59,6 @@ public class PoiExcelUtil{
      * @throws IllegalAccessException IllegalAccessException
      * @throws InstantiationException InstantiationException
      * @throws InvocationTargetException InvocationTargetException
-     *
      */
     public static <T> List<T> readExcelToObjectList(InputStream inputStream
                                                     , String fileName
@@ -136,6 +138,7 @@ public class PoiExcelUtil{
 
 
     /**
+     * 读取Excel返回Map
      *
      * @param file file
      * @param sheetName sheetName
@@ -155,6 +158,7 @@ public class PoiExcelUtil{
 
 
     /**
+     * 读取Excel返回Map
      *
      * @param inputStream inputStream
      * @param fileName fileName

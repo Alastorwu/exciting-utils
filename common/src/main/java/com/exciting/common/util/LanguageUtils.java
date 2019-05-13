@@ -1,4 +1,4 @@
-package com.exciting.webapp.common.util;
+package com.exciting.common.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package com.exciting.webapp.common.util.banner;
+package com.exciting.common.util.banner;
 
 
 

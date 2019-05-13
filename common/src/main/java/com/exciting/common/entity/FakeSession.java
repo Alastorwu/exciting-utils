@@ -1,4 +1,4 @@
-package com.exciting.webapp.common.entity;
+package com.exciting.common.entity;
 
 import lombok.Data;
 

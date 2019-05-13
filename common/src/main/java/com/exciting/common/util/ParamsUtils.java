@@ -1,4 +1,4 @@
-package com.exciting.webapp.common.util;
+package com.exciting.common.util;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -55,7 +55,7 @@ public class ResponseEntity<T>{
     }
 
     public static <T> ResponseEntity<T> ok(@Nullable T body) {
-        return new ResponseEntity<>(body, OK);
+        return new ResponseEntity<>(body, OK,OK.getReasonPhrase());
     }
     public static <T> ResponseEntity<T> serverError(String message) {
         return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR, message);

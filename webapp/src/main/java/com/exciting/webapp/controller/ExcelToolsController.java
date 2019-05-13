@@ -1,5 +1,6 @@
 package com.exciting.webapp.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.exciting.common.entity.ResponseEntity;
 import com.exciting.common.util.PoiExcelUtil;
 import com.exciting.webapp.entity.TestVo;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +28,10 @@ public class ExcelToolsController {
 
     @RequestMapping(value = "/testUp",method = RequestMethod.POST)
     public ResponseEntity<List<TestVo>> testUp(
-            @ApiParam(required = true,value = "上传文件")@RequestParam() MultipartFile file,
-            @ApiParam(required = true,value = "{Excel对应标题:Object对应字段}")@RequestParam() Map<String,String> map
-    ) {
+            @ApiParam(required = true,value = "上传文件")@RequestParam() MultipartFile file
+            ,@ApiParam(required = true,value = "{Excel对应标题:Object对应字段}example={'姓名':'name','年龄':'age'}")
+             @RequestParam()String titles
+            ) {
         try {
             String fileName = file.getOriginalFilename();
             log.info("上传的文件名为：" + fileName);
@@ -48,8 +51,8 @@ public class ExcelToolsController {
             }
 
             InputStream inputStream = file.getInputStream();
-            map.put("姓名","name");
-            map.put("年龄","age");
+            Map<String,String> map = new HashMap(JSONObject.parseObject(titles));
+            //List<Map<String,Object>> maps = PoiExcelUtil.readExcelToMap(inputStream, fileName, null, map);
             List<TestVo> maps = PoiExcelUtil.readExcelToObjectList(inputStream, fileName, null, map, TestVo.class);
             return ResponseEntity.ok(maps);
         } catch (IOException | IllegalAccessException | InstantiationException | InvocationTargetException e) {

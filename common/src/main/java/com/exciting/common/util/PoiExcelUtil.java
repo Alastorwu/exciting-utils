@@ -67,22 +67,9 @@ public class PoiExcelUtil{
                                             , Map<String,String> title
                                             , Class<T> outClass)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        Workbook workbook = null;
-        //根据文件后缀读取
-        if(fileName.toLowerCase().endsWith("xlsx")){
-            workbook = new XSSFWorkbook(inputStream);
-        }else if(fileName.toLowerCase().endsWith("xls")){
-            workbook = new HSSFWorkbook(inputStream);
-        }
-        if(workbook==null){return null;}
         Method[] allMethods = outClass.getMethods();
         if(allMethods==null){return null;}
-        Sheet sheet;
-        if(StringUtils.isBlank(sheetName)){
-            sheet = workbook.getSheetAt(0);
-        }else{
-            sheet = workbook.getSheet(sheetName);
-        }
+        Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
         List<Method> methods = new ArrayList<>();
         List<T> list = new ArrayList<>();
@@ -144,6 +131,36 @@ public class PoiExcelUtil{
         }
         return list;
     }
+
+    private static Sheet getSheet(InputStream inputStream, String fileName, String sheetName) throws IOException {
+        Workbook workbook = null;
+        //根据文件后缀读取
+        if(fileName.toLowerCase().endsWith("xlsx")){
+            workbook = new XSSFWorkbook(inputStream);
+        }else if(fileName.toLowerCase().endsWith("xls")){
+            workbook = new HSSFWorkbook(inputStream);
+        }
+        if (workbook==null){
+            return null;
+        }
+        Sheet sheet;
+        if(StringUtils.isBlank(sheetName)){
+            sheet = workbook.getSheetAt(0);
+        }else{
+            sheet = workbook.getSheet(sheetName);
+        }
+        return sheet;
+    }
+
+
+
+    public static List<Map<String, Object>> readExcelToMap(InputStream inputStream
+                                                           , String fileName
+                                                           , String sheetName
+                                                           , Map<String, String> title) {
+        return null;
+    }
+
 
 
 }

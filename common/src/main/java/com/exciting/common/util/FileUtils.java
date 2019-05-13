@@ -1,4 +1,4 @@
-package com.exciting.util;
+package com.exciting.common.util;
 
 import lombok.extern.slf4j.Slf4j;
 import sun.misc.BASE64Encoder;

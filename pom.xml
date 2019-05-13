@@ -4,9 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>exciting.utils</groupId>
-    <artifactId>exciting.utils</artifactId>
+    <groupId>exciting.tools</groupId>
+    <artifactId>tools</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>webapp</module>
+        <module>common</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -16,7 +21,6 @@
 
 
     <properties>
-        <start-class>com.exciting.SpringBootApplication</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
@@ -66,12 +70,7 @@
         </dependency>
 
 
-        <!-- kaptcha -->
-        <dependency>
-            <groupId>com.github.penggle</groupId>
-            <artifactId>kaptcha</artifactId>
-            <version>2.3.2</version>
-        </dependency>
+
 
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -96,21 +95,8 @@
 
 
     <build>
-        <finalName>exciting_utils</finalName>
+        <finalName>exciting_tools</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>${start-class}</mainClass>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -119,17 +105,6 @@
                     <target>8</target>
                 </configuration>
             </plugin>
-
-
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 </project>

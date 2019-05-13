@@ -1,6 +1,6 @@
 package com.exciting.component;
 
-import com.exciting.entity.FakeSession;
+import com.exciting.common.entity.FakeSession;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

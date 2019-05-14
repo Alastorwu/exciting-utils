@@ -61,7 +61,7 @@ public class ExcelToolsController {
     }
 
     @RequestMapping(value = "/testDown",method = RequestMethod.GET)
-    public ResponseEntity testDown() throws IOException {
+    public ResponseEntity<InputStreamResource> testDown() throws IOException {
         //File file = new File("D://pic.png");
         String fileName = "pic.png";
         FileSystemResource file = new FileSystemResource("D://pic.png");

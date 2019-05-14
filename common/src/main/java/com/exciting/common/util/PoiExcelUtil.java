@@ -7,10 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -71,49 +68,6 @@ public class PoiExcelUtil{
                         returnList.add(TypeUtils.castToJavaBean(m,outClass))
         );
         return returnList;
-        /*
-        Sheet sheet = getSheet(inputStream,fileName,sheetName);
-        if(sheet == null){return null;}
-        List<T> list = new ArrayList<>();
-        Map<String,Cell> titleCellMap = new HashMap<>();
-        for (Row row : sheet) {
-            //读取标题
-            if(row.getRowNum()==0){
-                for (Cell cell : row) {
-                    String key = title.get(cell.getStringCellValue());
-                    if(StringUtils.isBlank(key)){
-                        continue;
-                    }
-                    titleCellMap.put(key,cell);
-
-                }
-            }else{
-                JSONObject jsonObject = new JSONObject();
-                //读取一行字段转换为Object
-                for (Map.Entry<String, Cell> cellMethodEntry : titleCellMap.entrySet()) {
-                    String titleKey = cellMethodEntry.getKey();
-                    Cell titleCell = cellMethodEntry.getValue();
-
-                    Cell cell = row.getCell(titleCell.getColumnIndex());
-                    if(cell == null){
-                        continue;
-                    }
-                    int cellType = cell.getCellType();
-                    if( Cell.CELL_TYPE_FORMULA==cellType
-                            || Cell.CELL_TYPE_NUMERIC==cellType
-                            || Cell.CELL_TYPE_ERROR==cellType
-                            || Cell.CELL_TYPE_BLANK==cellType){
-                        jsonObject.put(titleKey,cell.getNumericCellValue());
-                    }else if(Cell.CELL_TYPE_BOOLEAN==cellType){
-                        jsonObject.put(titleKey,cell.getBooleanCellValue());
-                    }else{
-                        jsonObject.put(titleKey,cell.getStringCellValue());
-                    }
-                }
-                list.add(jsonObject.toJavaObject(outClass));
-            }
-        }
-        return list;*/
     }
 
 
@@ -311,6 +265,26 @@ public class PoiExcelUtil{
         }
         return list;
     }
+
+
+    /**
+     * workbook转流
+     *
+     * @param workbook workbook
+     * @return InputStream
+     * @throws IOException IOException
+     */
+    public static InputStream workbookToInputStream(Workbook workbook) throws IOException {
+        if (workbook==null){
+            return null;
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        workbook.write(bos);
+        byte[] barry = bos.toByteArray();
+        return new ByteArrayInputStream(barry);
+    }
+
+
 
     private static Sheet getSheet(InputStream inputStream, String fileName, String sheetName) throws IOException {
         Workbook workbook = null;

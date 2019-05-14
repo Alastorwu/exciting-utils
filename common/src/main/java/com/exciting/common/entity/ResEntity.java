@@ -8,60 +8,60 @@ import org.springframework.util.Assert;
 import static org.springframework.http.HttpStatus.*;
 
 @Data
-public class ResponseEntity<T>{
+public class ResEntity<T>{
 
     private T body;
     private Integer status;
     private String message;
 
-    public ResponseEntity(HttpStatus status) {
+    public ResEntity(HttpStatus status) {
         Assert.notNull(status, "HttpStatus must not be null");
         this.status = status.value();
     }
 
-    public ResponseEntity(int status) {
+    public ResEntity(int status) {
         this.status = status;
     }
 
-    public ResponseEntity(HttpStatus status, String message) {
+    public ResEntity(HttpStatus status, String message) {
         Assert.notNull(status, "HttpStatus must not be null");
         this.status = status.value();
         this.message = message;
     }
 
-    public ResponseEntity(int status, String message) {
+    public ResEntity(int status, String message) {
         this.status = status;
         this.message = message;
     }
 
-    public ResponseEntity(@Nullable T body, HttpStatus status) {
+    public ResEntity(@Nullable T body, HttpStatus status) {
         this(status);
         this.body = body;
     }
 
-    public ResponseEntity(@Nullable T body, int status) {
+    public ResEntity(@Nullable T body, int status) {
         this.body = body;
         this.status = status;
     }
 
-    public ResponseEntity(@Nullable T body, HttpStatus status, String message) {
+    public ResEntity(@Nullable T body, HttpStatus status, String message) {
         this(status,message);
         this.body = body;
     }
 
-    public ResponseEntity(@Nullable T body, int status, String message) {
+    public ResEntity(@Nullable T body, int status, String message) {
         this(status,message);
         this.body = body;
     }
 
-    public static <T> ResponseEntity<T> ok(@Nullable T body) {
-        return new ResponseEntity<>(body, OK,OK.getReasonPhrase());
+    public static <T> ResEntity<T> ok(@Nullable T body) {
+        return new ResEntity<>(body, OK,OK.getReasonPhrase());
     }
-    public static <T> ResponseEntity<T> serverError(String message) {
-        return new ResponseEntity<>(null, INTERNAL_SERVER_ERROR, message);
+    public static <T> ResEntity<T> serverError(String message) {
+        return new ResEntity<>(null, INTERNAL_SERVER_ERROR, message);
     }
-    public static <T> ResponseEntity<T> forbidden(String message) {
-        return new ResponseEntity<>(null, FORBIDDEN, message);
+    public static <T> ResEntity<T> forbidden(String message) {
+        return new ResEntity<>(null, FORBIDDEN, message);
     }
 
     public void setStatus(HttpStatus httpStatus) {

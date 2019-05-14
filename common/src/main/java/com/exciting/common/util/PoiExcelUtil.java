@@ -1,5 +1,6 @@
 package com.exciting.common.util;
 
+import com.alibaba.fastjson.util.TypeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -26,6 +27,100 @@ public class PoiExcelUtil{
      * 读取Excel返回实体类
      *
      * @param file file
+     * @param sheetName sheetName
+     * @param title title
+     * @param outClass outClass
+     * @param <T> <T>
+     * @return List<T>
+     * @throws IOException IOException
+     */
+    public static <T> List<T> readExcelToList(File file
+            , String sheetName
+            , Map<String,String> title
+            , Class<T> outClass)
+            throws IOException {
+        String fileName = file.getName();
+        log.info("PoiExcelUtil读取的文件名为：" + fileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return readExcelToList(fileInputStream,fileName,sheetName,title,outClass);
+    }
+
+    /**
+     * 读取Excel返回实体类
+     *
+     * @param inputStream inputStream
+     * @param fileName fileName
+     * @param sheetName sheet名
+     * @param title Map<Excel对应标题,Object对应字段>
+     * @param outClass 输出类型
+     * @return List<T>
+     * @throws IOException IOException
+     */
+    public static <T> List<T> readExcelToList(InputStream inputStream
+            , String fileName
+            , String sheetName
+            , Map<String,String> title
+            , Class<T> outClass)
+            throws IOException{
+        List<Map<String, Object>> maps = readExcelToMap(inputStream, fileName, sheetName, title);
+        if(maps==null){
+            return null;
+        }
+        List<T> returnList = new ArrayList<>();
+        maps.forEach((m)->
+                        returnList.add(TypeUtils.castToJavaBean(m,outClass))
+        );
+        return returnList;
+        /*
+        Sheet sheet = getSheet(inputStream,fileName,sheetName);
+        if(sheet == null){return null;}
+        List<T> list = new ArrayList<>();
+        Map<String,Cell> titleCellMap = new HashMap<>();
+        for (Row row : sheet) {
+            //读取标题
+            if(row.getRowNum()==0){
+                for (Cell cell : row) {
+                    String key = title.get(cell.getStringCellValue());
+                    if(StringUtils.isBlank(key)){
+                        continue;
+                    }
+                    titleCellMap.put(key,cell);
+
+                }
+            }else{
+                JSONObject jsonObject = new JSONObject();
+                //读取一行字段转换为Object
+                for (Map.Entry<String, Cell> cellMethodEntry : titleCellMap.entrySet()) {
+                    String titleKey = cellMethodEntry.getKey();
+                    Cell titleCell = cellMethodEntry.getValue();
+
+                    Cell cell = row.getCell(titleCell.getColumnIndex());
+                    if(cell == null){
+                        continue;
+                    }
+                    int cellType = cell.getCellType();
+                    if( Cell.CELL_TYPE_FORMULA==cellType
+                            || Cell.CELL_TYPE_NUMERIC==cellType
+                            || Cell.CELL_TYPE_ERROR==cellType
+                            || Cell.CELL_TYPE_BLANK==cellType){
+                        jsonObject.put(titleKey,cell.getNumericCellValue());
+                    }else if(Cell.CELL_TYPE_BOOLEAN==cellType){
+                        jsonObject.put(titleKey,cell.getBooleanCellValue());
+                    }else{
+                        jsonObject.put(titleKey,cell.getStringCellValue());
+                    }
+                }
+                list.add(jsonObject.toJavaObject(outClass));
+            }
+        }
+        return list;*/
+    }
+
+
+    /**
+     * 读取Excel返回实体类
+     *
+     * @param file file
      * @param sheetName sheet名
      * @param title Map<Excel对应标题,Object对应字段>
      * @param outClass 输出类型
@@ -35,6 +130,7 @@ public class PoiExcelUtil{
      * @throws InstantiationException InstantiationException
      * @throws InvocationTargetException InvocationTargetException
      */
+    @Deprecated
     public static <T> List<T> readExcelToObjectList(File file
                                                     , String sheetName
                                                     , Map<String,String> title
@@ -60,6 +156,7 @@ public class PoiExcelUtil{
      * @throws InstantiationException InstantiationException
      * @throws InvocationTargetException InvocationTargetException
      */
+    @Deprecated
     public static <T> List<T> readExcelToObjectList(InputStream inputStream
                                                     , String fileName
                                                     , String sheetName

@@ -25,7 +25,7 @@ public class ExcelToolsController {
 
 
     @RequestMapping(value = "/testUp",method = RequestMethod.POST)
-    public ResponseEntity<List<Map<String,Object>>> testUp(
+    public ResponseEntity<List<Map>> testUp(
             @ApiParam(required = true,value = "上传文件")@RequestParam() MultipartFile file
             ,@ApiParam(required = true,value = "{Excel对应标题:Object对应字段}example={'姓名':'name','年龄':'age'}")
              @RequestParam()String titles
@@ -49,9 +49,10 @@ public class ExcelToolsController {
             }
 
             InputStream inputStream = file.getInputStream();
-            Map<String,String> map = new HashMap(JSONObject.parseObject(titles));
-            List<Map<String,Object>> maps = PoiExcelUtil.readExcelToMap(inputStream, fileName, null, map);
-            return ResponseEntity.ok(maps);
+            Map<String,String> titleMap = new HashMap(JSONObject.parseObject(titles));
+            //List<Map<String,Object>> mapList = PoiExcelUtil.readExcelToMap(inputStream, fileName, null, titleMap);
+            List<Map> mapList = PoiExcelUtil.readExcelToList(inputStream, fileName, null, titleMap, Map.class);
+            return ResponseEntity.ok(mapList);
         } catch (IOException e) {
             e.printStackTrace();
             log.error(e.getMessage(),e);

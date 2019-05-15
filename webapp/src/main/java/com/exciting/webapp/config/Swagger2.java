@@ -26,8 +26,8 @@ public class Swagger2 {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 				.title("赛艇工具包")
-				.description("常用工具集合，让你亦可赛艇")
-				.termsOfServiceUrl("http://www.excting/")
+				.description("赛艇工具包，让你亦可赛艇")
+				.termsOfServiceUrl("http://harth.excting.haha/")
 				.contact(new Contact("Alastor","",""))
 				.version("1.0").build();
 	}

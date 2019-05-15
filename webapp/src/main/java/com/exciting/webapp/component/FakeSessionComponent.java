@@ -32,7 +32,7 @@ public class FakeSessionComponent {
 
     }
 
-    public void clean(){
+    private void clean(){
         session.entrySet().removeIf(item ->
                 LocalDateTime.now().compareTo(item.getValue().getExpireTime()) > 0);
     }

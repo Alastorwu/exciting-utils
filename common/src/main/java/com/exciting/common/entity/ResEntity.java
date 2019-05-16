@@ -1,11 +1,10 @@
 package com.exciting.common.entity;
 
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
-import static org.springframework.http.HttpStatus.*;
+import static com.exciting.common.entity.HttpStatus.*;
 
 @Data
 public class ResEntity<T>{
@@ -55,7 +54,7 @@ public class ResEntity<T>{
     }
 
     public static <T> ResEntity<T> ok(@Nullable T body) {
-        return new ResEntity<>(body, OK,OK.getReasonPhrase());
+        return new ResEntity<>(body, OK, OK.getReasonPhrase());
     }
     public static <T> ResEntity<T> serverError(String message) {
         return new ResEntity<>(null, INTERNAL_SERVER_ERROR, message);

@@ -1,5 +1,6 @@
 package com.exciting.webapp.controller;
 
+import com.exciting.common.entity.ResEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,8 +13,8 @@ public class HelloWorldController {
 
 
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
-    public String helloWorld(HttpServletResponse response){
-        return "Hello World!";
+    public ResEntity<String> helloWorld(HttpServletResponse response){
+        return ResEntity.ok("Hello World!");
     }
 
 

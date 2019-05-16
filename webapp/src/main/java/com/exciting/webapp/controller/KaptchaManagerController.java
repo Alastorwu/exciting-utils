@@ -35,7 +35,7 @@ public class KaptchaManagerController {
 
     @ApiOperation(value = "验证码获取"/*, httpMethod = "GET"*/)
     @RequestMapping(value = "/image/kaptcha.jpg",method = {RequestMethod.GET,RequestMethod.POST})
-    public ModelAndView handleRequest(HttpServletResponse response,
+    public void handleRequest(HttpServletResponse response,
                                       @ApiParam(value = "时间戳")@RequestParam("time")Long time) throws Exception{
         response.setDateHeader("Expires", 0);
         // Set standard HTTP/1.1 no-cache headers.
@@ -64,7 +64,7 @@ public class KaptchaManagerController {
         // write the data out
         ImageIO.write(bi, "jpg", out);
         out.flush();
-        return null;
+
     }
 
     @ApiOperation(value = "验证码验证")

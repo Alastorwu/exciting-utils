@@ -12,5 +12,5 @@ spring:
   banner:
     location: banners/frog.txt
 
-logging:
-  config: classpath:logback.xml
+#logging:
+#  config: classpath:logback.xml

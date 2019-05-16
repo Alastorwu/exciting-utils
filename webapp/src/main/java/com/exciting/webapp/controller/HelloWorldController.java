@@ -11,11 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/test")
 public class HelloWorldController {
 
-
     @RequestMapping(value = "/hello",method = RequestMethod.GET)
     public ResEntity<String> helloWorld(HttpServletResponse response){
         return ResEntity.ok("Hello World!");
     }
-
 
 }

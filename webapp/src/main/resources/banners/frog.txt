@@ -27,7 +27,7 @@ DDDDDDDDDDDDDDDDD8,?ODZ..=D8888888888888
 DDDDDD88NDDDDD888DNIO8$I..Z8888888888888
 DDDDDDDD8DDND8D88DDDDDOI.?78888888888888
 
-${AnsiColor.BRIGHT_YELLOW}苟利国家生死以，岂因祸福避趋之
+${AnsiColor.BRIGHT_YELLOW}真正的粉丝，就算只有字符，也能看出我是谁
 Were it to benefit my country I would lay down my life;What then is risk to me?${AnsiColor.BRIGHT_RED}
 Application Version: ${application.version}${application.formatted-version}
 Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}

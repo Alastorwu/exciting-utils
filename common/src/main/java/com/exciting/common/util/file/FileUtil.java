@@ -2,7 +2,7 @@
  * e-fuli.com Inc.
  * Copyright (c) 2015-2018 All Rights Reserved.
  */
-package com.exciting.common.util;
+package com.exciting.common.util.file;
 
 import java.io.*;
 

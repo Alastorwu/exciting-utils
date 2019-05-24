@@ -1,5 +1,7 @@
 package com.exciting.common.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -7,10 +9,14 @@ import org.springframework.util.Assert;
 import static com.exciting.common.entity.HttpStatus.*;
 
 @Data
+@ApiModel()
 public class ResEntity<T>{
 
+    @ApiModelProperty(value = "返回实体")
     private T body;
+    @ApiModelProperty(value = "返回码")
     private Integer status;
+    @ApiModelProperty(value = "描述")
     private String message;
 
     public ResEntity(HttpStatus status) {

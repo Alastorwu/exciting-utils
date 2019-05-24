@@ -1,6 +1,8 @@
 package com.exciting.webapp.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.exciting.common.entity.HttpStatus;
+import com.exciting.common.entity.ResEntity;
 import com.exciting.webapp.component.FakeSessionComponent;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
@@ -69,23 +71,18 @@ public class KaptchaManagerController {
 
     @ApiOperation(value = "验证码验证")
     @PostMapping("/check")
-    public String loginCheck(HttpServletRequest request,
-                             @ApiParam(value = "验证码") @RequestParam(value = "code") String code,
-                             @ApiParam(value = "时间戳") @RequestParam("time")Long time){
+    public ResEntity<String> loginCheck(HttpServletRequest request,
+                                        @ApiParam(value = "验证码") @RequestParam(value = "code") String code,
+                                        @ApiParam(value = "时间戳") @RequestParam("time")Long time){
         log.info("验证码验证,参数为：{}", "{code="+code+";}");
-        JSONObject ret = new JSONObject();
-        ret.put("code","0");
-        ret.put("message","SUCCESS");
         //用户输入的验证码的值
         String kaptchaExpected = fakeSessionComponent.getAttribute(Constants.KAPTCHA_SESSION_KEY+time);
         //校验验证码是否正确
         if (code == null || !code.equals(kaptchaExpected) ) {
-            ret.put("code","500");
-            ret.put("message","FAILD");
+            return new ResEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
-        ret.put("currentDate",System.currentTimeMillis());
-        log.info("验证码验证结束：{}", ret.toJSONString());
-        return ret.toJSONString();
+        log.info("验证码验证结束");
+        return ResEntity.ok("");
     }
 
 

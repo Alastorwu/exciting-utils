@@ -27,8 +27,8 @@ public class PoiExcelUtilTest {
 
     @Test
     public void export() throws IOException {
-        exportExcel("201808");
-        exportExcel("201809");
+//        exportExcel("201808");
+//        exportExcel("201809");
         exportExcel("201810");
         exportExcel("201811");
         exportExcel("201812");
@@ -42,7 +42,7 @@ public class PoiExcelUtilTest {
 
         File file = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\交行对账单1rar\\"+fileDate+".xlsx");
         Map<String, String> sonTitle = new HashMap<>();
-        sonTitle.put("下单时间","下单时间");
+        /*sonTitle.put("下单时间","下单时间");
         sonTitle.put("订单号","订单号");
         sonTitle.put("三方订单号","三方订单号");
         sonTitle.put("商品BN","商品BN");
@@ -58,7 +58,24 @@ public class PoiExcelUtilTest {
         sonTitle.put("支付方式","支付方式");
         sonTitle.put("收货人","收货人");
         sonTitle.put("收货人手机号","收货人手机号");
-        sonTitle.put("收货地址","收货地址");
+        sonTitle.put("收货地址","收货地址");*/
+
+        sonTitle.put("下单时间","下单时间");
+        sonTitle.put("订单号","订单号");
+        sonTitle.put("商品编码","商品编码");
+        sonTitle.put("所属供应商","所属供应商");
+        sonTitle.put("商品名称","商品名称");
+        sonTitle.put("数量","数量");
+        sonTitle.put("分类","分类");
+        sonTitle.put("积分现金值","积分现金值");
+        sonTitle.put("积分值","积分值");
+        sonTitle.put("在线支付现金值","在线支付现金值");
+        sonTitle.put("在线支付交易流水","在线支付交易流水");
+        sonTitle.put("在线支付方式","在线支付方式");
+        sonTitle.put("收货人","收货人");
+        sonTitle.put("收货手机号","收货手机号");
+        sonTitle.put("收货人地址","收货人地址");
+
         List<Map<String, Object>> sonMaps= PoiExcelUtil.readExcelToMap(file, null, sonTitle);
         //System.out.println(JSON.toJSONString(sonMaps.get(0)));
 

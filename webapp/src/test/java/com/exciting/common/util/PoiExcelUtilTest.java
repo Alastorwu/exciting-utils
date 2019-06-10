@@ -128,12 +128,9 @@ public class PoiExcelUtilTest {
                 }else{
                     LocalDateTime parse1 = LocalDateTime.parse(o + "",timeFormatter1);
                     String format = timeFormatter.format(parse1);
-                    if (mainValue.contains(format)) {
-                        return true;
-                    }
+                    return mainValue.contains(format);
                 }
 
-                return false;
             }).collect(Collectors.toList());
             sonMaps.removeAll(filters);
             Row row = sheet.createRow(rownum);

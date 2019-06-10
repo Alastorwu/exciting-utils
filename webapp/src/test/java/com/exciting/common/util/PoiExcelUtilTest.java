@@ -1,7 +1,5 @@
 package com.exciting.common.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,27 +13,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
 
 public class PoiExcelUtilTest {
 
 
     @Test
     public void export() throws IOException {
-//        exportExcel("201809");
-//        exportExcel("201810");
-//        exportExcel("201811");
-//        exportExcel("201812");
+        exportExcel("201808");
+        exportExcel("201809");
+        exportExcel("201810");
+        exportExcel("201811");
+        exportExcel("201812");
         exportExcel("201901");
         exportExcel("201902");
     }
@@ -45,52 +41,52 @@ public class PoiExcelUtilTest {
         System.out.println("读取"+fileDate+"开始:"+start);
 
         File file = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\交行对账单1rar\\"+fileDate+".xlsx");
-        Map<String, String> title = new HashMap<>();
-        title.put("下单时间","下单时间");
-        title.put("订单号","订单号");
-        title.put("三方订单号","三方订单号");
-        title.put("商品BN","商品BN");
-        title.put("商品名称","商品名称");
-        title.put("分类","分类");
-        title.put("金额","金额");
-        title.put("数量","数量");
-        title.put("运费","运费");
-        title.put("积分值（开票）","积分值（开票）");
-        title.put("积分","积分");
-        title.put("现金值","现金值");
-        title.put("交易流水号","交易流水号");
-        title.put("支付方式","支付方式");
-        title.put("收货人","收货人");
-        title.put("收货人手机号","收货人手机号");
-        title.put("收货地址","收货地址");
-        List<Map<String, Object>> maps= PoiExcelUtil.readExcelToMap(file, null, title);
-        //System.out.println(JSON.toJSONString(maps.get(0)));
+        Map<String, String> sonTitle = new HashMap<>();
+        sonTitle.put("下单时间","下单时间");
+        sonTitle.put("订单号","订单号");
+        sonTitle.put("三方订单号","三方订单号");
+        sonTitle.put("商品BN","商品BN");
+        sonTitle.put("商品名称","商品名称");
+        sonTitle.put("分类","分类");
+        sonTitle.put("金额","金额");
+        sonTitle.put("数量","数量");
+        sonTitle.put("运费","运费");
+        sonTitle.put("积分值（开票）","积分值（开票）");
+        sonTitle.put("积分","积分");
+        sonTitle.put("现金值","现金值");
+        sonTitle.put("交易流水号","交易流水号");
+        sonTitle.put("支付方式","支付方式");
+        sonTitle.put("收货人","收货人");
+        sonTitle.put("收货人手机号","收货人手机号");
+        sonTitle.put("收货地址","收货地址");
+        List<Map<String, Object>> sonMaps= PoiExcelUtil.readExcelToMap(file, null, sonTitle);
+        //System.out.println(JSON.toJSONString(sonMaps.get(0)));
 
 
         File file1 = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\积分流水记录明细-"+fileDate+".xls");
-        Map<String, String> title1 = new HashMap<>();
-        title1.put("交易流水号","交易流水号");
-        title1.put("交易积分","交易积分");
-        title1.put("交易类型","交易类型");
-        title1.put("交易状态","交易状态");
-        title1.put("第三方业务流水号","第三方业务流水号");
-        title1.put("第三方原业务流水号","第三方原业务流水号");
-        title1.put("第三方名称","第三方名称");
-        title1.put("交易时间","交易时间");
-        List<Map<String, Object>> maps1 = PoiExcelUtil.readExcelToMap(file1, null, title1);
-        //System.out.println(JSON.toJSONString(maps1.get(0)));
+        Map<String, String> mainTitle = new HashMap<>();
+        mainTitle.put("交易流水号","交易流水号");
+        mainTitle.put("交易积分","交易积分");
+        mainTitle.put("交易类型","交易类型");
+        mainTitle.put("交易状态","交易状态");
+        mainTitle.put("第三方业务流水号","第三方业务流水号");
+        mainTitle.put("第三方原业务流水号","第三方原业务流水号");
+        mainTitle.put("第三方名称","第三方名称");
+        mainTitle.put("交易时间","交易时间");
+        List<Map<String, Object>> mainMap = PoiExcelUtil.readExcelToMap(file1, null, mainTitle);
+        //System.out.println(JSON.toJSONString(mainMap.get(0)));
 
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("sheet1");
         int titleCellIndex = 0;
         Row titleRow = sheet.createRow(0);
-        for (Map.Entry<String, String> entry:title1.entrySet()) {
+        for (Map.Entry<String, String> entry:mainTitle.entrySet()) {
             Cell cell = titleRow.createCell(titleCellIndex);
             cell.setCellValue(entry.getValue());
             titleCellIndex++;
         }
-        for (Map.Entry<String, String> entry:title.entrySet()) {
+        for (Map.Entry<String, String> entry:sonTitle.entrySet()) {
             Cell cell = titleRow.createCell(titleCellIndex);
             cell.setCellValue(entry.getValue());
             titleCellIndex++;
@@ -99,31 +95,49 @@ public class PoiExcelUtilTest {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         DateTimeFormatter timeFormatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         int rownum = 1;
-        for (Map m:maps1) {
-            String 交易时间 = "" + m.get("交易时间");
-            List<Map<String, Object>> filters = maps.stream().filter(s -> {
-                Object o = s.get("下单时间");
+        for (Map m:mainMap) {
+            String 第三方业务流水号 = "" + m.get("第三方业务流水号");
+            if(StringUtils.isBlank(第三方业务流水号)){
+                continue;
+            }
+            List<Map<String, Object>> filters = sonMaps.stream().filter(s -> {
+                Object o = s.get("订单号");
+                if(o==null){
+                    return false;
+                }
+                String 订单号 = "" + o;
+                if(StringUtils.isNotBlank(订单号) && 订单号.length()>2){
+                    订单号 = 订单号.substring(2);
+                }
+
+                if( 第三方业务流水号.contains(订单号) ){
+                    return true;
+                }
+                o = s.get("下单时间");
                 if(o==null){
                     return false;
                 }
                 if(o instanceof Date){
                     Date 下单时间 = (Date) o;
                     LocalDateTime localDateTime = DateUtils.dateToLocalDateTime(下单时间);
+                    if(localDateTime==null){
+                        return false;
+                    }
                     String format = timeFormatter.format(localDateTime);
-                    if (StringUtils.equals(交易时间, format)) {
+                    if (第三方业务流水号.contains(format)) {
                         return true;
                     }
                 }else{
                     LocalDateTime parse1 = LocalDateTime.parse(o + "",timeFormatter1);
                     String format = timeFormatter.format(parse1);
-                    if (StringUtils.equals(交易时间, format)) {
+                    if (第三方业务流水号.contains(format)) {
                         return true;
                     }
                 }
 
                 return false;
             }).collect(Collectors.toList());
-            maps.removeAll(filters);
+            sonMaps.removeAll(filters);
             Row row = sheet.createRow(rownum);
             rownum++;
             for (Cell tc:titleRow) {
@@ -154,11 +168,14 @@ public class PoiExcelUtilTest {
                             }
                             cell.setCellValue(bigDecimal.doubleValue());
                         }else{
-                            StringBuffer stringBuffer = new StringBuffer();
+                            String sb = "";
                             for (Map f:filters) {
-                                stringBuffer.append(f.get(key)+";");
+                                sb = f.get(key)+";";
                             }
-                            cell.setCellValue(stringBuffer.toString());
+                            if(sb.length()>1){
+                                sb = sb.substring(0,sb.length()-1);
+                            }
+                            cell.setCellValue(sb);
                         }
 
                     }
@@ -167,8 +184,9 @@ public class PoiExcelUtilTest {
 
 
         }
-        for (Map m:maps) {
+        for (Map m:sonMaps) {
             Row row = sheet.createRow(rownum);
+            rownum++;
             for (Cell tc:titleRow) {
                 String key = tc.getStringCellValue();
                 Object o = m.get(key);
@@ -180,12 +198,12 @@ public class PoiExcelUtilTest {
             }
         }
 
-        workbook.write(new FileOutputStream("D:\\oneDrive\\work\\export\\"+fileDate+"-export.xlsx"));
+        workbook.write(new FileOutputStream("D:\\oneDrive\\work\\export1\\"+fileDate+"-export.xlsx"));
 
         long end = System.currentTimeMillis();
         System.out.println("读取"+fileDate+"结束，耗时:"+(end-start));
 
-        /*Map<String, Map<String, Object>> collect = maps.stream().collect(
+        /*Map<String, Map<String, Object>> collect = sonMaps.stream().collect(
                 Collectors.toMap((m) -> ""+m.get("三方订单号"), (m) -> m)
         );*/
 

@@ -1,5 +1,7 @@
 package com.exciting.common.util;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.util.TypeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -117,8 +119,8 @@ public class PoiExcelUtil{
                                                     , Map<String,String> title
                                                     , Class<T> outClass)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        if(outClass==null){return null;}
         Method[] allMethods = outClass.getMethods();
-        if(allMethods==null){return null;}
         Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
         Map<Cell,Method> titleMethod = new HashMap<>();
@@ -238,7 +240,95 @@ public class PoiExcelUtil{
 
                 }
             }else{
-                Map<String, Object> map = new HashMap<>();
+                Map<String, Object> map = new HashMap<>(16);
+                //读取一行字段转换为Object
+                for (Map.Entry<String, Cell> cellMethodEntry : titleCellMap.entrySet()) {
+                    String titleKey = cellMethodEntry.getKey();
+                    Cell titleCell = cellMethodEntry.getValue();
+
+                    Cell cell = row.getCell(titleCell.getColumnIndex());
+                    if(cell == null){
+                        continue;
+                    }
+                    int cellType = cell.getCellType();
+                    if(titleisTime(titleKey) && Cell.CELL_TYPE_NUMERIC==cellType){
+                        map.put(titleKey,cell.getDateCellValue());
+                    }else if( Cell.CELL_TYPE_FORMULA==cellType
+                        || Cell.CELL_TYPE_NUMERIC==cellType
+                        || Cell.CELL_TYPE_ERROR==cellType
+                        || Cell.CELL_TYPE_BLANK==cellType){
+                        map.put(titleKey,new BigDecimal(cell.getNumericCellValue()+""));
+                    }else if(Cell.CELL_TYPE_BOOLEAN==cellType){
+                        map.put(titleKey,cell.getBooleanCellValue());
+                    }else{
+                        map.put(titleKey,cell.getStringCellValue());
+                    }
+                }
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    private static boolean titleisTime(String titleKey) {
+        return     titleKey.contains("时间")
+                || titleKey.contains("日期")
+                || titleKey.contains("date")
+                || titleKey.contains("time");
+    }
+
+
+    /**
+     * 读取Excel返回Map
+     *
+     * @param file file
+     * @param sheetName sheetName
+     * @param title title
+     * @return List<Map<String, Object>>
+     * @throws IOException IOException
+     */
+    public static JSONArray readExcelToJSON(File file
+            , String sheetName
+            , Map<String, String> title)throws IOException {
+        String fileName = file.getName();
+        log.info("PoiExcelUtil读取的文件名为：" + fileName);
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return readExcelToJSON(fileInputStream,fileName,sheetName,title);
+
+    }
+
+
+    /**
+     * 读取Excel返回Map
+     *
+     * @param inputStream inputStream
+     * @param fileName fileName
+     * @param sheetName sheetName
+     * @param title title
+     * @return List<Map<String, Object>>
+     * @throws IOException IOException
+     */
+    public static JSONArray readExcelToJSON(InputStream inputStream
+                                                           , String fileName
+                                                           , String sheetName
+                                                           , Map<String, String> title) throws IOException {
+        Sheet sheet = getSheet(inputStream,fileName,sheetName);
+        if(sheet == null){return null;}
+        JSONArray jsonArray = new JSONArray();
+        Map<String,Cell> titleCellMap = new HashMap<>();
+        for (Row row : sheet) {
+            //读取标题
+            if(row.getRowNum()==0){
+                for (Cell cell : row) {
+                    String key = title.get(cell.getStringCellValue());
+                    if(StringUtils.isBlank(key)){
+                        continue;
+                    }
+                    titleCellMap.put(key,cell);
+
+                }
+            }else{
+                JSONObject jsonObject = new JSONObject();
                 //读取一行字段转换为Object
                 for (Map.Entry<String, Cell> cellMethodEntry : titleCellMap.entrySet()) {
                     String titleKey = cellMethodEntry.getKey();
@@ -253,17 +343,17 @@ public class PoiExcelUtil{
                         || Cell.CELL_TYPE_NUMERIC==cellType
                         || Cell.CELL_TYPE_ERROR==cellType
                         || Cell.CELL_TYPE_BLANK==cellType){
-                        map.put(titleKey,cell.getNumericCellValue());
+                        jsonObject.put(titleKey,cell.getNumericCellValue());
                     }else if(Cell.CELL_TYPE_BOOLEAN==cellType){
-                        map.put(titleKey,cell.getBooleanCellValue());
+                        jsonObject.put(titleKey,cell.getBooleanCellValue());
                     }else{
-                        map.put(titleKey,cell.getStringCellValue());
+                        jsonObject.put(titleKey,cell.getStringCellValue());
                     }
                 }
-                list.add(map);
+                jsonArray.add(jsonObject);
             }
         }
-        return list;
+        return jsonArray;
     }
 
 

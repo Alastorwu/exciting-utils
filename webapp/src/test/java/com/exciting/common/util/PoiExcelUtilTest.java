@@ -27,13 +27,14 @@ public class PoiExcelUtilTest {
 
     @Test
     public void export() throws IOException {
-//        exportExcel("201808");
-//        exportExcel("201809");
-        exportExcel("201810");
-        exportExcel("201811");
-        exportExcel("201812");
-        exportExcel("201901");
-        exportExcel("201902");
+        exportExcel("201808");
+        exportExcel("201809");
+//        exportExcel("201810");
+//        exportExcel("201811");
+//        exportExcel("201812");
+//        exportExcel("201901");
+//        exportExcel("201902");
+//        exportExcel("2018121");
     }
 
     private void exportExcel(String fileDate) throws IOException {
@@ -41,8 +42,9 @@ public class PoiExcelUtilTest {
         System.out.println("读取"+fileDate+"开始:"+start);
 
         File file = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\交行对账单1rar\\"+fileDate+".xlsx");
+//        File file = new File("D:\\oneDrive\\work\\兜礼积分明细1\\交行最新订单信息\\积分流水记录明细-"+fileDate+".xls");
         Map<String, String> sonTitle = new HashMap<>();
-        /*sonTitle.put("下单时间","下单时间");
+        sonTitle.put("下单时间","下单时间");
         sonTitle.put("订单号","订单号");
         sonTitle.put("三方订单号","三方订单号");
         sonTitle.put("商品BN","商品BN");
@@ -58,9 +60,9 @@ public class PoiExcelUtilTest {
         sonTitle.put("支付方式","支付方式");
         sonTitle.put("收货人","收货人");
         sonTitle.put("收货人手机号","收货人手机号");
-        sonTitle.put("收货地址","收货地址");*/
+        sonTitle.put("收货地址","收货地址");
 
-        sonTitle.put("下单时间","下单时间");
+        /*sonTitle.put("下单时间","下单时间");
         sonTitle.put("订单号","订单号");
         sonTitle.put("商品编码","商品编码");
         sonTitle.put("所属供应商","所属供应商");
@@ -74,13 +76,14 @@ public class PoiExcelUtilTest {
         sonTitle.put("在线支付方式","在线支付方式");
         sonTitle.put("收货人","收货人");
         sonTitle.put("收货手机号","收货手机号");
-        sonTitle.put("收货人地址","收货人地址");
+        sonTitle.put("收货人地址","收货人地址");*/
 
         List<Map<String, Object>> sonMaps= PoiExcelUtil.readExcelToMap(file, null, sonTitle);
         //System.out.println(JSON.toJSONString(sonMaps.get(0)));
 
 
-        File file1 = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\积分流水记录明细-"+fileDate+".xls");
+        //File file1 = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\积分流水记录明细-"+fileDate+".xls");
+        File file1 = new File("D:\\oneDrive\\work\\兜礼积分明细1\\交行最新订单信息\\积分流水记录明细-"+fileDate+".xls");
         Map<String, String> mainTitle = new HashMap<>();
         mainTitle.put("交易流水号","交易流水号");
         mainTitle.put("交易积分","交易积分");
@@ -141,10 +144,12 @@ public class PoiExcelUtilTest {
                         return false;
                     }
                     String format = timeFormatter.format(localDateTime);
+                    format = format.substring(2);
                     return mainValue.contains(format);
                 }else{
                     LocalDateTime parse1 = LocalDateTime.parse(o + "",timeFormatter1);
                     String format = timeFormatter.format(parse1);
+                    format = format.substring(2);
                     return mainValue.contains(format);
                 }
 
@@ -208,7 +213,7 @@ public class PoiExcelUtilTest {
             }
         }
 
-        workbook.write(new FileOutputStream("D:\\oneDrive\\work\\export1\\"+fileDate+"-export.xlsx"));
+        workbook.write(new FileOutputStream("D:\\oneDrive\\work\\export3\\"+fileDate+"-export.xlsx"));
 
         long end = System.currentTimeMillis();
         System.out.println("读取"+fileDate+"结束，耗时:"+(end-start));

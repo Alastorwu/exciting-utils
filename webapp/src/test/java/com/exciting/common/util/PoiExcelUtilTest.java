@@ -96,8 +96,8 @@ public class PoiExcelUtilTest {
         DateTimeFormatter timeFormatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         int rownum = 1;
         for (Map m:mainMap) {
-            String 第三方业务流水号 = "" + m.get("第三方业务流水号");
-            if(StringUtils.isBlank(第三方业务流水号)){
+            String mainValue = "" + m.get("第三方业务流水号");
+            if(StringUtils.isBlank(mainValue)){
                 continue;
             }
             List<Map<String, Object>> filters = sonMaps.stream().filter(s -> {
@@ -105,12 +105,12 @@ public class PoiExcelUtilTest {
                 if(o==null){
                     return false;
                 }
-                String 订单号 = "" + o;
-                if(StringUtils.isNotBlank(订单号) && 订单号.length()>2){
-                    订单号 = 订单号.substring(2);
+                String orderNo = "" + o;
+                if(StringUtils.isNotBlank(orderNo) && orderNo.length()>2){
+                    orderNo = orderNo.substring(2);
                 }
 
-                if( 第三方业务流水号.contains(订单号) ){
+                if( mainValue.contains(orderNo) ){
                     return true;
                 }
                 o = s.get("下单时间");
@@ -118,19 +118,17 @@ public class PoiExcelUtilTest {
                     return false;
                 }
                 if(o instanceof Date){
-                    Date 下单时间 = (Date) o;
-                    LocalDateTime localDateTime = DateUtils.dateToLocalDateTime(下单时间);
+                    Date orderTime = (Date) o;
+                    LocalDateTime localDateTime = DateUtils.dateToLocalDateTime(orderTime);
                     if(localDateTime==null){
                         return false;
                     }
                     String format = timeFormatter.format(localDateTime);
-                    if (第三方业务流水号.contains(format)) {
-                        return true;
-                    }
+                    return mainValue.contains(format);
                 }else{
                     LocalDateTime parse1 = LocalDateTime.parse(o + "",timeFormatter1);
                     String format = timeFormatter.format(parse1);
-                    if (第三方业务流水号.contains(format)) {
+                    if (mainValue.contains(format)) {
                         return true;
                     }
                 }
@@ -148,8 +146,6 @@ public class PoiExcelUtilTest {
                     if(o!=null){
                         cell.setCellValue(o+"");
                     }else if(!CollectionUtils.isEmpty(filters)){
-                        String s = filters.get(0).get(key) + "";
-                        // 金额	数量	运费	 积分值（开票） 	积分	现金值
                         if(
                                 StringUtils.equals(key,"金额")||
                                         StringUtils.equals(key,"数量")||

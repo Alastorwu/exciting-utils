@@ -43,7 +43,7 @@ public class PoiExcelUtilTest {
 
         File file = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\交行对账单1rar\\"+fileDate+".xlsx");
 //        File file = new File("D:\\oneDrive\\work\\兜礼积分明细1\\交行最新订单信息\\积分流水记录明细-"+fileDate+".xls");
-        Map<String, String> sonTitle = new HashMap<>();
+        Map<String, String> sonTitle = new HashMap<>(16);
         sonTitle.put("下单时间","下单时间");
         sonTitle.put("订单号","订单号");
         sonTitle.put("三方订单号","三方订单号");
@@ -84,7 +84,7 @@ public class PoiExcelUtilTest {
 
         //File file1 = new File("D:\\oneDrive\\work\\兜礼积分明细1\\兜礼积分明细\\积分流水记录明细-"+fileDate+".xls");
         File file1 = new File("D:\\oneDrive\\work\\兜礼积分明细1\\交行最新订单信息\\积分流水记录明细-"+fileDate+".xls");
-        Map<String, String> mainTitle = new HashMap<>();
+        Map<String, String> mainTitle = new HashMap<>(7);
         mainTitle.put("交易流水号","交易流水号");
         mainTitle.put("交易积分","交易积分");
         mainTitle.put("交易类型","交易类型");

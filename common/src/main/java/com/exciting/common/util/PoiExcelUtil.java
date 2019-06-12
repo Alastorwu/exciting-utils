@@ -16,10 +16,17 @@ import java.math.BigDecimal;
 import java.util.*;
 
 /**
- * Created by wujiaxing on 2017/5/2.
+ *
+ * @author wujiaxing
+ * @date 2017/5/2
  */
 @Slf4j
 public class PoiExcelUtil{
+
+
+    private static final String XLSX = ".xlsx";
+
+    private static final String XLS = ".xls";
 
 
     /**
@@ -123,7 +130,7 @@ public class PoiExcelUtil{
         Method[] allMethods = outClass.getMethods();
         Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
-        Map<Cell,Method> titleMethod = new HashMap<>();
+        Map<Cell,Method> titleMethod = new HashMap<>(16);
         List<T> list = new ArrayList<>();
         for (Row row : sheet) {
             //读取标题
@@ -227,7 +234,7 @@ public class PoiExcelUtil{
         Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
         List<Map<String, Object>> list = new ArrayList<>();
-        Map<String,Cell> titleCellMap = new HashMap<>();
+        Map<String,Cell> titleCellMap = new HashMap<>(16);
         for (Row row : sheet) {
             //读取标题
             if(row.getRowNum()==0){
@@ -284,7 +291,7 @@ public class PoiExcelUtil{
      * @param file file
      * @param sheetName sheetName
      * @param title title
-     * @return List<Map<String, Object>>
+     * @return JSONArray
      * @throws IOException IOException
      */
     public static JSONArray readExcelToJSON(File file
@@ -315,7 +322,7 @@ public class PoiExcelUtil{
         Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
         JSONArray jsonArray = new JSONArray();
-        Map<String,Cell> titleCellMap = new HashMap<>();
+        Map<String,Cell> titleCellMap = new HashMap<>(16);
         for (Row row : sheet) {
             //读取标题
             if(row.getRowNum()==0){
@@ -376,12 +383,13 @@ public class PoiExcelUtil{
 
 
 
+
     private static Sheet getSheet(InputStream inputStream, String fileName, String sheetName) throws IOException {
         Workbook workbook = null;
         //根据文件后缀读取
-        if(fileName.toLowerCase().endsWith("xlsx")){
+        if(fileName.toLowerCase().endsWith(XLSX)){
             workbook = new XSSFWorkbook(inputStream);
-        }else if(fileName.toLowerCase().endsWith("xls")){
+        }else if(fileName.toLowerCase().endsWith(XLS)){
             workbook = new HSSFWorkbook(inputStream);
         }
         if (workbook==null){

@@ -15,10 +15,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -230,4 +227,14 @@ public class PoiExcelUtilTest {
         return str.matches("-?[0-9]+.*[0-9]*");
 
     }
+
+
+    public static void main(String[] args) {
+        String uuid = UUID.randomUUID().toString();
+        uuid = uuid.replace("-", "");
+        System.out.println(uuid);
+        System.out.println(uuid.length());
+    }
+
+
 }

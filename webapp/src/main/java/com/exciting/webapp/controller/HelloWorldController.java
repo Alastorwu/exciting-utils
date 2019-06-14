@@ -1,12 +1,14 @@
 package com.exciting.webapp.controller;
 
 import com.exciting.common.entity.ResEntity;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
+@Api(tags ={"hello world"})
 @RestController
 @RequestMapping("/test")
 public class HelloWorldController {

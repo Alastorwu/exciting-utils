@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by wujiaxing on 2017/5/9.
  */
-@Api(description = "图片验证码")
+@Api(tags ={"图片验证码"})
 @Slf4j
 @RestController
 @RequestMapping("/kaptcha")

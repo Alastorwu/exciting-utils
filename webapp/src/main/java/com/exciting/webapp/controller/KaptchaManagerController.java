@@ -1,6 +1,5 @@
 package com.exciting.webapp.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.exciting.common.entity.HttpStatus;
 import com.exciting.common.entity.ResEntity;
 import com.exciting.webapp.component.FakeSessionComponent;
@@ -10,7 +9,6 @@ import io.swagger.annotations.*;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;

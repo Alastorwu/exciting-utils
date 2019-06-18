@@ -18,4 +18,10 @@ public class HelloWorldController {
         return ResEntity.ok("Hello World!");
     }
 
+
+    public static void main(String[] args) {
+        Byte b = new Byte("1");
+        Integer i = new Integer(1);
+        System.out.println((b.intValue()==i.intValue())+"");
+    }
 }

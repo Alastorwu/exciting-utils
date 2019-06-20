@@ -1,5 +1,7 @@
 package com.exciting.common.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +15,7 @@ public class DateUtils {
 
     public final static SimpleDateFormat yyyyMMdd_format = new SimpleDateFormat("yyyy-MM-dd");
 
-    public final static String localDateTimeToString(LocalDateTime time,DateTimeFormatter formatter){
+    public static String localDateTimeToString(LocalDateTime time,DateTimeFormatter formatter){
         if(time==null || formatter==null){
             return null;
         }
@@ -57,10 +59,26 @@ public class DateUtils {
         return Date.from(zdt.toInstant());
     }
 
+
+    public static Date stringToDate(String dateString) {
+        if(StringUtils.isBlank(dateString)){
+            return null;
+        }
+        return localDateTimeToDate(LocalDateTime.parse(dateString, format_ymdhms));
+    }
+
+
+    public static Date stringToDate(String dateString,DateTimeFormatter dateTimeFormatter) {
+        if(StringUtils.isBlank(dateString)){
+            return null;
+        }
+        return localDateTimeToDate(LocalDateTime.parse(dateString, dateTimeFormatter));
+    }
+
+
     public static void main(String[] args) throws Exception {
         String s = DateUtils.localDateTimeToString(LocalDateTime.now(), format_ymdhms);
         System.out.println(s);
         //LocalDateTime.now().plusSeconds()
     }
-
 }

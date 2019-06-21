@@ -25,7 +25,17 @@ public class ExcitingController {
         if(flag){
             return ResEntity.ok(flag);
         }else {
-            return ResEntity.forbidden("插入失败");
+            return ResEntity.forbidden("插入失败!");
+        }
+    }
+
+    @RequestMapping(value = "/update",method = {RequestMethod.POST})
+    public ResEntity<Boolean> update(@RequestBody ExcitingVo excitingVo){
+        boolean flag = excitingService.update(excitingVo);
+        if(flag){
+            return ResEntity.ok(flag);
+        }else {
+            return ResEntity.forbidden("修改失败!");
         }
     }
 

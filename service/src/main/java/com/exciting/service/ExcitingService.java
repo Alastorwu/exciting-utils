@@ -9,4 +9,6 @@ public interface ExcitingService {
     ExcitingVo get(int id);
 
     PageInfo<ExcitingVo> page(ExcitingVo excitingVo, int pageNum, int pageSize, String orderBy);
+
+    boolean update(ExcitingVo excitingVo);
 }

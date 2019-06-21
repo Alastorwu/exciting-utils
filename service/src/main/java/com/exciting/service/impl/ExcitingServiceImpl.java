@@ -32,6 +32,16 @@ public class ExcitingServiceImpl implements ExcitingService {
     }
 
     @Override
+    public boolean update(ExcitingVo excitingVo) {
+        Exciting exciting = excitingMapper.selectByPrimaryKey(excitingVo.getId());
+        if(exciting==null){
+            return false;
+        }
+        BeanUtils.copyProperties(excitingVo,exciting);
+        return excitingMapper.updateByPrimaryKeySelective(exciting)>0;
+    }
+
+    @Override
     public ExcitingVo get(int id) {
         Exciting exciting = excitingMapper.selectByPrimaryKey(id);
         if(exciting!=null){
@@ -65,4 +75,6 @@ public class ExcitingServiceImpl implements ExcitingService {
         page.setList(vos);
         return page;
     }
+
+
 }

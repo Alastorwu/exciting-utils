@@ -2,7 +2,7 @@ package com.exciting.webapp.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.exciting.common.entity.ResEntity;
-import com.exciting.common.util.PoiExcelUtil;
+import com.exciting.common.util.excel.PoiExcelUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,9 @@
-package com.exciting.common.util;
+package com.exciting.common.util.excel;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.util.TypeUtils;
+import com.exciting.common.util.ExcitingStringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -21,6 +22,7 @@ import java.util.*;
  * @date 2017/5/2
  */
 @Slf4j
+@Deprecated
 public class PoiExcelUtil{
 
 
@@ -74,7 +76,7 @@ public class PoiExcelUtil{
         }
         List<T> returnList = new ArrayList<>();
         maps.forEach((m)->
-                        returnList.add(TypeUtils.castToJavaBean(m,outClass))
+                returnList.add(TypeUtils.castToJavaBean(m,outClass))
         );
         return returnList;
     }
@@ -95,9 +97,9 @@ public class PoiExcelUtil{
      */
     @Deprecated
     public static <T> List<T> readExcelToObjectList(File file
-                                                    , String sheetName
-                                                    , Map<String,String> title
-                                                    , Class<T> outClass)
+            , String sheetName
+            , Map<String,String> title
+            , Class<T> outClass)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         String fileName = file.getName();
         log.info("PoiExcelUtil读取的文件名为：" + fileName);
@@ -121,10 +123,10 @@ public class PoiExcelUtil{
      */
     @Deprecated
     public static <T> List<T> readExcelToObjectList(InputStream inputStream
-                                                    , String fileName
-                                                    , String sheetName
-                                                    , Map<String,String> title
-                                                    , Class<T> outClass)
+            , String fileName
+            , String sheetName
+            , Map<String,String> title
+            , Class<T> outClass)
             throws IOException, IllegalAccessException, InstantiationException, InvocationTargetException {
         if(outClass==null){return null;}
         Method[] allMethods = outClass.getMethods();
@@ -160,29 +162,27 @@ public class PoiExcelUtil{
                         continue;
                     }
                     Class<?> parameterType = parameterTypes[0];
+                    int cellType = cell.getCellType().getCode();
                     if(parameterType == String.class){
                         method.invoke(outInfo, cell.getStringCellValue());
                     }else if(parameterType ==int.class || parameterType ==Integer.class){
-                        int cellType = cell.getCellType();
-                        if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
+
+                        if(CellType.FORMULA.getCode()!=cellType && CellType.NUMERIC.getCode()!=cellType){
                             continue;
                         }
                         method.invoke(outInfo, (int)cell.getNumericCellValue());
                     }else if(parameterType == double.class || parameterType == Double.class){
-                        int cellType = cell.getCellType();
-                        if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
+                        if(CellType.FORMULA.getCode()!=cellType && CellType.NUMERIC.getCode()!=cellType){
                             continue;
                         }
                         method.invoke(outInfo, cell.getNumericCellValue());
                     }else if(parameterType == BigDecimal.class){
-                        int cellType = cell.getCellType();
-                        if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
+                        if(CellType.FORMULA.getCode()!=cellType && CellType.NUMERIC.getCode()!=cellType){
                             continue;
                         }
                         method.invoke(outInfo, new BigDecimal(cell.getNumericCellValue()));
                     }else if(parameterType == Date.class ){
-                        int cellType = cell.getCellType();
-                        if(Cell.CELL_TYPE_FORMULA!=cellType && Cell.CELL_TYPE_NUMERIC!=cellType){
+                        if(CellType.FORMULA.getCode()!=cellType && CellType.NUMERIC.getCode()!=cellType){
                             continue;
                         }
                         if(!DateUtil.isCellDateFormatted(cell)){continue;}
@@ -207,8 +207,8 @@ public class PoiExcelUtil{
      * @throws IOException IOException
      */
     public static List<Map<String, Object>> readExcelToMap(File file
-                                                           , String sheetName
-                                                           , Map<String, String> title)throws IOException {
+            , String sheetName
+            , Map<String, String> title)throws IOException {
         String fileName = file.getName();
         log.info("PoiExcelUtil读取的文件名为：" + fileName);
         FileInputStream fileInputStream = new FileInputStream(file);
@@ -228,9 +228,9 @@ public class PoiExcelUtil{
      * @throws IOException IOException
      */
     public static List<Map<String, Object>> readExcelToMap(InputStream inputStream
-                                                           , String fileName
-                                                           , String sheetName
-                                                           , Map<String, String> title) throws IOException {
+            , String fileName
+            , String sheetName
+            , Map<String, String> title) throws IOException {
         Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
         List<Map<String, Object>> list = new ArrayList<>();
@@ -257,15 +257,15 @@ public class PoiExcelUtil{
                     if(cell == null){
                         continue;
                     }
-                    int cellType = cell.getCellType();
-                    if(titleisTime(titleKey) && Cell.CELL_TYPE_NUMERIC==cellType){
+                    int cellType = cell.getCellType().getCode();
+                    if(titleisTime(titleKey) && CellType.NUMERIC.getCode()==cellType){
                         map.put(titleKey,cell.getDateCellValue());
-                    }else if( Cell.CELL_TYPE_FORMULA==cellType
-                        || Cell.CELL_TYPE_NUMERIC==cellType
-                        || Cell.CELL_TYPE_ERROR==cellType
-                        || Cell.CELL_TYPE_BLANK==cellType){
+                    }else if( CellType.FORMULA.getCode()==cellType
+                            || CellType.NUMERIC.getCode()==cellType
+                            || CellType.ERROR.getCode()==cellType
+                            || CellType.BLANK.getCode()==cellType){
                         map.put(titleKey,new BigDecimal(cell.getNumericCellValue()+""));
-                    }else if(Cell.CELL_TYPE_BOOLEAN==cellType){
+                    }else if(CellType.BOOLEAN.getCode()==cellType){
                         map.put(titleKey,cell.getBooleanCellValue());
                     }else{
                         map.put(titleKey,cell.getStringCellValue());
@@ -316,9 +316,9 @@ public class PoiExcelUtil{
      * @throws IOException IOException
      */
     public static JSONArray readExcelToJSON(InputStream inputStream
-                                                           , String fileName
-                                                           , String sheetName
-                                                           , Map<String, String> title) throws IOException {
+            , String fileName
+            , String sheetName
+            , Map<String, String> title) throws IOException {
         Sheet sheet = getSheet(inputStream,fileName,sheetName);
         if(sheet == null){return null;}
         JSONArray jsonArray = new JSONArray();
@@ -345,13 +345,13 @@ public class PoiExcelUtil{
                     if(cell == null){
                         continue;
                     }
-                    int cellType = cell.getCellType();
-                    if( Cell.CELL_TYPE_FORMULA==cellType
-                        || Cell.CELL_TYPE_NUMERIC==cellType
-                        || Cell.CELL_TYPE_ERROR==cellType
-                        || Cell.CELL_TYPE_BLANK==cellType){
+                    int cellType = cell.getCellType().getCode();
+                    if( CellType.FORMULA.getCode()==cellType
+                            || CellType.NUMERIC.getCode()==cellType
+                            || CellType.ERROR.getCode()==cellType
+                            || CellType.BLANK.getCode()==cellType){
                         jsonObject.put(titleKey,cell.getNumericCellValue());
-                    }else if(Cell.CELL_TYPE_BOOLEAN==cellType){
+                    }else if(CellType.BOOLEAN.getCode()==cellType){
                         jsonObject.put(titleKey,cell.getBooleanCellValue());
                     }else{
                         jsonObject.put(titleKey,cell.getStringCellValue());

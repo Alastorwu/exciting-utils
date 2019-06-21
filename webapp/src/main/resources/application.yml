@@ -17,8 +17,8 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://18.224.73.96:3306/exciting?autoReconnect=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
-    username: root
-    password: 123456
+    username: exciting
+    password: q53qepqa
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     # 下面为连接池的补充设置，应用到上面所有数据源中

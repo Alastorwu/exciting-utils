@@ -181,4 +181,43 @@
       update_user = #{updateUser,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="listByExciting" parameterType="com.exciting.dao.entity.po.Exciting" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from exciting
+    <where>
+      <if test="id != null">
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="name != null">
+        and name = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="value != null">
+        and value = #{value,jdbcType=VARCHAR}
+      </if>
+      <if test="type != null">
+        and type = #{type,jdbcType=INTEGER}
+      </if>
+      <if test="price != null">
+        and price = #{price,jdbcType=DECIMAL}
+      </if>
+      <if test="del != null">
+        and del = #{del,jdbcType=INTEGER}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createUser != null">
+        and create_user = #{createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateUser != null">
+        and update_user = #{updateUser,jdbcType=VARCHAR}
+      </if>
+    </where>
+
+  </select>
 </mapper>

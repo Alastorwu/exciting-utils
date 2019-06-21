@@ -36,7 +36,7 @@ public class ExcitingController {
     }
 
 
-    @RequestMapping(value = "/page",method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/page",method = {RequestMethod.POST})
     public ResEntity<PageInfo<ExcitingVo>> page(@RequestBody ExcitingVo excitingVo
             ,@ApiParam("页数") @RequestParam(defaultValue = "1") int pageNum
             ,@ApiParam("分页大小") @RequestParam(defaultValue = "10") int pageSize

@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.net.ssl.SSLContext;
 
 @Slf4j
+@Deprecated
 public class HttpClientUtils {
 
     private static final int TIME_OUT = 10 * 1000;

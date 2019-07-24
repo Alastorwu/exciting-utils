@@ -88,7 +88,7 @@ public class RSAUtils {
      * @return
      * @throws Exception
      */
-    public static String sign(byte[] data, String privateKey) throws Exception {
+    public static byte[] sign(byte[] data, String privateKey) throws Exception {
         byte[] keyBytes = Base64Utils.decode(privateKey);
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
@@ -96,7 +96,11 @@ public class RSAUtils {
         Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
         signature.initSign(privateK);
         signature.update(data);
-        return Base64Utils.encode(signature.sign());
+        return signature.sign();
+    }
+    public static String sign(String dataString, String privateKey) throws Exception {
+        byte[] sign = sign(Base64Utils.decode(dataString), privateKey);
+        return Base64Utils.encode(sign);
     }
 
     /** *//**
@@ -122,6 +126,10 @@ public class RSAUtils {
         signature.initVerify(publicK);
         signature.update(data);
         return signature.verify(Base64Utils.decode(sign));
+    }
+    public static boolean verify(String dataString, String publicKey, String sign)
+            throws Exception {
+        return verify(Base64Utils.decode(dataString), publicKey, sign);
     }
 
     /** *//**
@@ -162,6 +170,11 @@ public class RSAUtils {
         out.close();
         return decryptedData;
     }
+    public static String decryptByPrivateKey(String dataString, String privateKey)
+            throws Exception {
+        byte[] bytes = decryptByPrivateKey(Base64Utils.decode(dataString), privateKey);
+        return new String(bytes);
+    }
 
     /** *//**
      * <p>
@@ -200,6 +213,11 @@ public class RSAUtils {
         byte[] decryptedData = out.toByteArray();
         out.close();
         return decryptedData;
+    }
+    public static String decryptByPublicKey(String dataString, String publicKey)
+            throws Exception {
+        byte[] bytes = decryptByPublicKey(Base64Utils.decode(dataString), publicKey);
+        return new String(bytes);
     }
 
     /** *//**
@@ -241,6 +259,11 @@ public class RSAUtils {
         out.close();
         return encryptedData;
     }
+    public static String encryptByPublicKey(String dataString, String publicKey)
+            throws Exception {
+        byte[] bytes = encryptByPublicKey(dataString.getBytes(), publicKey);
+        return Base64Utils.encode(bytes);
+    }
 
     /** *//**
      * <p>
@@ -279,6 +302,11 @@ public class RSAUtils {
         byte[] encryptedData = out.toByteArray();
         out.close();
         return encryptedData;
+    }
+    public static String encryptByPrivateKey(String dataString, String privateKey)
+            throws Exception {
+        byte[] bytes = encryptByPrivateKey(dataString.getBytes(), privateKey);
+        return Base64Utils.encode(bytes);
     }
 
     /** *//**
@@ -320,13 +348,10 @@ public class RSAUtils {
         System.err.println("公钥加密——私钥解密");
         String source = "这是一行没有任何意义的文字，你看完了等于没看，不是吗？";
         System.out.println("\r加密前文字：\r\n" + source);
-        byte[] data = source.getBytes();
-        byte[] encodedData = RSAUtils.encryptByPublicKey(data, publicKey);
-        String encode = Base64Utils.encode(encodedData);
-        System.out.println("加密后文字：\r\n" + encode);
-        byte[] decodedData = RSAUtils.decryptByPrivateKey(Base64Utils.decode(encode), privateKey);
-        String target = new String(decodedData);
-        System.out.println("解密后文字: \r\n" + target);
+        String encodedData = RSAUtils.encryptByPublicKey(source, publicKey);
+        System.out.println("加密后文字：\r\n" + encodedData);
+        String decodedData = RSAUtils.decryptByPrivateKey(encodedData, privateKey);
+        System.out.println("解密后文字: \r\n" + decodedData);
     }*/
 
 
@@ -334,17 +359,14 @@ public class RSAUtils {
         System.err.println("私钥加密——公钥解密");
         String source = "这是一行测试RSA数字签名的无意义文字";
         System.out.println("原文字：\r\n" + source);
-        byte[] data = source.getBytes();
-        byte[] encodedData = RSAUtils.encryptByPrivateKey(data, privateKey);
-        String encode = Base64Utils.encode(encodedData);
+        String encode = RSAUtils.encryptByPrivateKey(source, privateKey);
         System.out.println("加密后：\r\n" + encode);
-        byte[] decodedData = RSAUtils.decryptByPublicKey(Base64Utils.decode(encode), publicKey);
-        String target = new String(decodedData);
-        System.out.println("解密后: \r\n" + target);
+        String decode = RSAUtils.decryptByPublicKey(encode, publicKey);
+        System.out.println("解密后: \r\n" + decode);
         System.err.println("私钥签名——公钥验证签名");
-        String sign = RSAUtils.sign(Base64Utils.decode(encode), privateKey);
+        String sign = RSAUtils.sign(encode, privateKey);
         System.err.println("签名:\r" + sign);
-        boolean status = RSAUtils.verify(Base64Utils.decode(encode), publicKey, sign);
+        boolean status = RSAUtils.verify(encode, publicKey, sign);
         System.err.println("验证结果:\r" + status);
     }*/
 
@@ -369,16 +391,18 @@ public class RSAUtils {
                 "d76altqVxXG0FL4CwrieV46B6uEhnopsSDRFEZN7e/VEpED8Gy7JAkEAgC2eS9wt" +
                 "sCbpW+guy7F6eiAYlZXipvyWcX+e+zE2JLHdR2qSoszs8Sx5bthtU7E46tclKK+v" +
                 "GPTSay8VFUPZZQ==";
-        System.err.println("公钥加密——私钥解密");
-        String source = "这是一行没有任何意义的文字，你看完了等于没看，不是吗？";
-        System.out.println("\r加密前文字：\r\n" + source);
-        byte[] data = source.getBytes();
-        byte[] encodedData = RSAUtils.encryptByPublicKey(data, publicKey);
-        String encode = Base64Utils.encode(encodedData);
-        System.out.println("加密后文字：\r\n" + encode);
-        byte[] decodedData = RSAUtils.decryptByPrivateKey(Base64Utils.decode(encode), privateKey);
-        String target = new String(decodedData);
-        System.out.println("解密后文字: \r\n" + target);
+        System.err.println("私钥加密——公钥解密");
+        String source = "这是一行测试RSA数字签名的无意义文字";
+        System.out.println("原文字：\r\n" + source);
+        String encode = RSAUtils.encryptByPrivateKey(source, privateKey);
+        System.out.println("加密后：\r\n" + encode);
+        String decode = RSAUtils.decryptByPublicKey(encode, publicKey);
+        System.out.println("解密后: \r\n" + decode);
+        System.err.println("私钥签名——公钥验证签名");
+        String sign = RSAUtils.sign(encode, privateKey);
+        System.err.println("签名:\r" + sign);
+        boolean status = RSAUtils.verify(encode, publicKey, sign);
+        System.err.println("验证结果:\r" + status);
     }
 
 }

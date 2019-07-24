@@ -1,7 +1,5 @@
 package com.exciting.common.util.security;
 
-import org.apache.xmlbeans.impl.util.Base64;
-
 import java.io.ByteArrayOutputStream;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -27,43 +25,43 @@ import javax.crypto.Cipher;
  */
 public class RSAUtils {
 
-    /** *//**
+    /** 
      * 加密算法RSA
      */
-    public static final String KEY_ALGORITHM = "RSA";
+    private static final String KEY_ALGORITHM = "RSA";
 
-    /** *//**
+    /** 
      * 签名算法
      */
-    public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
+    private static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
-    /** *//**
+    /** 
      * 获取公钥的key
      */
     private static final String PUBLIC_KEY = "RSAPublicKey";
 
-    /** *//**
+    /** 
      * 获取私钥的key
      */
     private static final String PRIVATE_KEY = "RSAPrivateKey";
 
-    /** *//**
+    /** 
      * RSA最大加密明文大小
      */
     private static final int MAX_ENCRYPT_BLOCK = 117;
 
-    /** *//**
+    /** 
      * RSA最大解密密文大小
      */
     private static final int MAX_DECRYPT_BLOCK = 128;
 
-    /** *//**
+    /** 
      * <p>
      * 生成密钥对(公钥和私钥)
      * </p>
      *
-     * @return
-     * @throws Exception
+     * @return Map<String, Object>
+     * @throws Exception Exception
      */
     public static Map<String, Object> genKeyPair(int keySize) throws Exception {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
@@ -77,7 +75,7 @@ public class RSAUtils {
         return keyMap;
     }
 
-    /** *//**
+    /** 
      * <p>
      * 用私钥对信息生成数字签名
      * </p>
@@ -85,8 +83,8 @@ public class RSAUtils {
      * @param data 已加密数据
      * @param privateKey 私钥(BASE64编码)
      *
-     * @return
-     * @throws Exception
+     * @return byte[]
+     * @throws Exception Exception
      */
     public static byte[] sign(byte[] data, String privateKey) throws Exception {
         byte[] keyBytes = Base64Utils.decode(privateKey);
@@ -103,7 +101,7 @@ public class RSAUtils {
         return Base64Utils.encode(sign);
     }
 
-    /** *//**
+    /** 
      * <p>
      * 校验数字签名
      * </p>
@@ -112,8 +110,8 @@ public class RSAUtils {
      * @param publicKey 公钥(BASE64编码)
      * @param sign 数字签名
      *
-     * @return
-     * @throws Exception
+     * @return boolean
+     * @throws Exception Exception
      *
      */
     public static boolean verify(byte[] data, String publicKey, String sign)
@@ -132,15 +130,15 @@ public class RSAUtils {
         return verify(Base64Utils.decode(dataString), publicKey, sign);
     }
 
-    /** *//**
+    /** 
      * <P>
      * 私钥解密
      * </p>
      *
      * @param encryptedData 已加密数据
      * @param privateKey 私钥(BASE64编码)
-     * @return
-     * @throws Exception
+     * @return byte[]
+     * @throws Exception Exception
      */
     public static byte[] decryptByPrivateKey(byte[] encryptedData, String privateKey)
             throws Exception {
@@ -176,15 +174,15 @@ public class RSAUtils {
         return new String(bytes);
     }
 
-    /** *//**
+    /** 
      * <p>
      * 公钥解密
      * </p>
      *
      * @param encryptedData 已加密数据
      * @param publicKey 公钥(BASE64编码)
-     * @return
-     * @throws Exception
+     * @return byte[]
+     * @throws Exception Exception
      */
     public static byte[] decryptByPublicKey(byte[] encryptedData, String publicKey)
             throws Exception {
@@ -220,15 +218,15 @@ public class RSAUtils {
         return new String(bytes);
     }
 
-    /** *//**
+    /** 
      * <p>
      * 公钥加密
      * </p>
      *
      * @param data 源数据
      * @param publicKey 公钥(BASE64编码)
-     * @return
-     * @throws Exception
+     * @return byte[]
+     * @throws Exception Exception
      */
     public static byte[] encryptByPublicKey(byte[] data, String publicKey)
             throws Exception {
@@ -265,15 +263,15 @@ public class RSAUtils {
         return Base64Utils.encode(bytes);
     }
 
-    /** *//**
+    /** 
      * <p>
      * 私钥加密
      * </p>
      *
      * @param data 源数据
      * @param privateKey 私钥(BASE64编码)
-     * @return
-     * @throws Exception
+     * @return byte[]
+     * @throws Exception Exception
      */
     public static byte[] encryptByPrivateKey(byte[] data, String privateKey)
             throws Exception {
@@ -309,32 +307,30 @@ public class RSAUtils {
         return Base64Utils.encode(bytes);
     }
 
-    /** *//**
+    /** 
      * <p>
      * 获取私钥
      * </p>
      *
      * @param keyMap 密钥对
-     * @return
-     * @throws Exception
+     * @return String
+     * @throws Exception Exception
      */
-    public static String getPrivateKey(Map<String, Object> keyMap)
-            throws Exception {
+    public static String getPrivateKey(Map<String, Object> keyMap){
         Key key = (Key) keyMap.get(PRIVATE_KEY);
         return Base64Utils.encode(key.getEncoded());
     }
 
-    /** *//**
+    /** 
      * <p>
      * 获取公钥
      * </p>
      *
      * @param keyMap 密钥对
-     * @return
-     * @throws Exception
+     * @return String
+     * @throws Exception Exception
      */
-    public static String getPublicKey(Map<String, Object> keyMap)
-            throws Exception {
+    public static String getPublicKey(Map<String, Object> keyMap){
         Key key = (Key) keyMap.get(PUBLIC_KEY);
         return Base64Utils.encode(key.getEncoded());
     }

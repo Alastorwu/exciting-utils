@@ -7,6 +7,10 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+/**
+ * @author wujiaxing
+ * @date 2018/5/7
+ */
 public class DateUtils {
 
     public final static DateTimeFormatter format_ymdhms = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

@@ -45,8 +45,9 @@ public class ExcelToolsController {
                 return ResEntity.forbidden("文件格式获取失败!");
             }
             suffixName = suffixName.toLowerCase();
-            if ( !".xls".equals(suffixName)
-                 && !".xlsx".equals(suffixName)) {
+            if (    !".xls".equals(suffixName)
+                 && !".xlsx".equals(suffixName)
+                 && !".xlsm".equals(suffixName)) {
                 return ResEntity.forbidden("文件格式必须为xls、xlsx!");
             }
 

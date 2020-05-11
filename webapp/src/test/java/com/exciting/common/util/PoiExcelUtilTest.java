@@ -11,9 +11,11 @@ import org.junit.Test;
 import org.springframework.util.CollectionUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -229,12 +231,30 @@ public class PoiExcelUtilTest {
 
     }
 
+    public static String formatDouble(double value) {
+        String retValue = null;
+        NumberFormat format = NumberFormat.getInstance();
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(2);
+        format.setGroupingUsed(false);
+        retValue = format.format(value);
+        retValue = retValue.replaceAll(",", "");
+        return retValue;
+    }
 
-    public static void main(String[] args) {
-        String uuid = UUID.randomUUID().toString();
-        uuid = uuid.replace("-", "");
-        System.out.println(uuid);
-        System.out.println(uuid.length());
+
+
+    public static void main(String[] args) throws IOException {
+        File file = new File("D:\\OneDrive\\work\\J148-157单个标签10组 - 副本.xlsm");
+        FileInputStream fileInputStream = new FileInputStream(file);
+        Workbook workbook = new XSSFWorkbook(fileInputStream);
+        Sheet sheetAt = workbook.getSheetAt(0);
+        Cell cell = sheetAt.getRow(12).getCell(0);
+        //System.out.println(formatDouble(cell.getNumericCellValue())+"");
+        cell.setCellValue(1234D);
+        workbook.write(new FileOutputStream(new File("D:\\OneDrive\\work\\new副本.xlsm")));
+        workbook.close();
+
     }
 
 

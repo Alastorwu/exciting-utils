@@ -27,6 +27,7 @@ public class PoiExcelUtil{
 
 
     private static final String XLSX = ".xlsx";
+    private static final String XLSM = ".xlsm";
 
     private static final String XLS = ".xls";
 
@@ -387,7 +388,8 @@ public class PoiExcelUtil{
     private static Sheet getSheet(InputStream inputStream, String fileName, String sheetName) throws IOException {
         Workbook workbook = null;
         //根据文件后缀读取
-        if(fileName.toLowerCase().endsWith(XLSX)){
+        if(       fileName.toLowerCase().endsWith(XLSX)
+                ||fileName.toLowerCase().endsWith(XLSM)){
             workbook = new XSSFWorkbook(inputStream);
         }else if(fileName.toLowerCase().endsWith(XLS)){
             workbook = new HSSFWorkbook(inputStream);

@@ -2,10 +2,8 @@ package com.exciting.common.util;
 
 import com.exciting.common.util.excel.PoiExcelUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.springframework.util.CollectionUtils;
@@ -245,14 +243,18 @@ public class PoiExcelUtilTest {
 
 
     public static void main(String[] args) throws IOException {
-        File file = new File("D:\\OneDrive\\work\\J148-157单个标签10组 - 副本.xlsm");
-        FileInputStream fileInputStream = new FileInputStream(file);
-        Workbook workbook = new XSSFWorkbook(fileInputStream);
-        Sheet sheetAt = workbook.getSheetAt(0);
-        Cell cell = sheetAt.getRow(12).getCell(0);
+//        File file = new File("D:\\OneDrive\\work\\J148-157单个标签10组 - 副本.xlsm");
+//        FileInputStream fileInputStream = new FileInputStream(file);
+        Workbook workbook = new XSSFWorkbook();
+//        Sheet sheetAt = workbook.getSheetAt(0);
+//        Cell cell = sheetAt.getRow(12).getCell(0);
         //System.out.println(formatDouble(cell.getNumericCellValue())+"");
-        cell.setCellValue(1234D);
-        workbook.write(new FileOutputStream(new File("D:\\OneDrive\\work\\new副本.xlsm")));
+//        cell.setCellValue(1234D);
+        Sheet sheet1 = workbook.createSheet("sheet1");
+        Drawing<?> patriarch = sheet1.createDrawingPatriarch();
+        ClientAnchor anchor = new XSSFClientAnchor(0, 0, 255, 255,(short) 1, 1, (short) 5, 8);
+        patriarch.createPicture(anchor, workbook.addPicture(BarcodeUtil.generate("123456"), XSSFWorkbook.PICTURE_TYPE_JPEG));
+        workbook.write(new FileOutputStream(new File("D:\\OneDrive\\work\\new副本.xlsx")));
         workbook.close();
 
     }

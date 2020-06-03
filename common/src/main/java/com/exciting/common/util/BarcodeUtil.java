@@ -62,7 +62,7 @@ public class BarcodeUtil {
         // 精细度
         final int dpi = 150;
         // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
+        final double moduleWidth = UnitConv.in2mm(2.0f / dpi);
 
         // 配置对象
         bean.setModuleWidth(moduleWidth);
@@ -90,7 +90,7 @@ public class BarcodeUtil {
         String msg = "123456789";
 //        String path = "barcode.png";
         String path = "D:\\OneDrive\\work\\barcode.png";
-        generateFile(msg, path);
+        //generateFile(msg, path);
         System.out.println("条形码生成=="+generateFile(msg, path));
     }
 }

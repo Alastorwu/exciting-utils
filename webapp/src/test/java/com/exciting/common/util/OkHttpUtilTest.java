@@ -61,7 +61,8 @@ public class OkHttpUtilTest {
     }
 
     public static void main(String[] args) throws Exception {
-
+        String s = OkHttpUtil.get("https://www.linkedin.com/sales/search/people?doFetchHeroCard=false&functionIncluded=25&geoIncluded=102772228&logHistory=true&page=1&rsLogId=470945756&searchSessionId=NHce7a1JQPWZAsQ98a3E6g%3D%3D&seniorityIncluded=4%2C5%2C7");
+        System.out.println(s);
     }
 
 }

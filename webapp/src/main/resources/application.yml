@@ -16,7 +16,7 @@ spring:
     location: banners/frog.txt
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://3.135.204.237:3306/exciting?autoReconnect=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
+    url: jdbc:mysql://18.188.121.49:3306/exciting?autoReconnect=true&characterEncoding=utf8&useSSL=false&allowMultiQueries=true
     username: exciting
     password: q53qepqa
     driver-class-name: com.mysql.cj.jdbc.Driver
